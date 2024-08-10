@@ -9,3 +9,6 @@ commands:
   island:
     permission: xxx.xxx
     description: teleport player to island
+  world:
+    permission: xxx.xxx
+    description: teleport player to world
