@@ -1,7 +1,11 @@
 de\jan\skyblock\SkyBlock.class
+de\jan\skyblock\island\schematic\SchematicManager.class
 de\jan\skyblock\island\Island.class
 de\jan\skyblock\player\SkyPlayer.class
 de\jan\skyblock\event\PlayerConnectionEvent.class
 de\jan\skyblock\island\IslandManager.class
+de\jan\skyblock\command\WorldCommand.class
 de\jan\skyblock\player\PlayerManager.class
 de\jan\skyblock\command\IslandCommand.class
+de\jan\skyblock\island\schematic\Schematic.class
+de\jan\skyblock\island\schematic\Category.class
