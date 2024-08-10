@@ -1,0 +1,7 @@
+de\jan\skyblock\SkyBlock.class
+de\jan\skyblock\island\Island.class
+de\jan\skyblock\player\SkyPlayer.class
+de\jan\skyblock\event\PlayerConnectionEvent.class
+de\jan\skyblock\island\IslandManager.class
+de\jan\skyblock\player\PlayerManager.class
+de\jan\skyblock\command\IslandCommand.class

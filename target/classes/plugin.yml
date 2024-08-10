@@ -1,0 +1,11 @@
+name: SkyBlock
+version: '1.0-SNAPSHOT'
+main: de.jan.skyblock.SkyBlock
+api-version: '1.21'
+author: Jan2808
+description: skyblock plugin
+
+commands:
+  island:
+    permission: xxx.xxx
+    description: teleport player to island
