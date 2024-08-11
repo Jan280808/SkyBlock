@@ -17,6 +17,6 @@ public class PlayerConnectionEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        this.playerManager.loadSkyPlayer(player.getUniqueId());
+        this.playerManager.getSkyPlayer(player.getUniqueId());
     }
 }

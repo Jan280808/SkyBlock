@@ -15,11 +15,10 @@ public class PlayerManager {
         this.playerMap = new HashMap<>();
     }
 
-    public void loadSkyPlayer(UUID uuid) {
-
-    }
-
-    private void registerSkyPlayer() {
-
+    public SkyPlayer getSkyPlayer(UUID uuid) {
+        if(playerMap.containsKey(uuid)) return playerMap.get(uuid);
+        SkyPlayer skyPlayer = new SkyPlayer(uuid, null);
+        this.playerMap.put(uuid, skyPlayer);
+        return skyPlayer;
     }
 }
