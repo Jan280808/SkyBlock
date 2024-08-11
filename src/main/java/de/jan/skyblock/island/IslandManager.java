@@ -3,6 +3,7 @@ package de.jan.skyblock.island;
 import de.jan.skyblock.island.schematic.Category;
 import de.jan.skyblock.island.schematic.Schematic;
 import de.jan.skyblock.island.schematic.SchematicManager;
+import de.jan.skyblock.player.SkyPlayer;
 import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -23,7 +24,7 @@ public class IslandManager {
         this.islandWorld = Bukkit.createWorld(new WorldCreator("islandWorld"));
     }
 
-    public void createIsland(Player player) {
+    public void createIsland(SkyPlayer skyPlayer) {
         int lastIndex = islandList.size();
         int x = 0;
         int z = 0;
@@ -35,7 +36,8 @@ public class IslandManager {
 
         Location location = new Location(islandWorld, x, 100, z);
         location.getBlock().setType(Material.BEDROCK);
-        Island island = new Island(player.getUniqueId(), lastIndex+1, location);
+        Island island = new Island(skyPlayer.getUuid(), lastIndex+1, location);
+        skyPlayer.setIsland(island);
         islandList.add(island);
 
         Schematic schematic = schematicManager.getSchematic(Category.ISLAND_NORMAL);
@@ -50,10 +52,20 @@ public class IslandManager {
             newBlock.setBlockData(block.getBlockData());
         });
 
+        Player player = skyPlayer.getPlayer();
         player.teleport(island.getCenter().add( 0, 2.5, 0).toCenterLocation());
         player.sendMessage("owner: " + island.getOwner());
         player.sendMessage("center: " + island.getCenter().x() + ", " + island.getCenter().z());
         player.sendMessage("id: " + island.getId());
     }
 
+    public Island getIslandPlayerIsOn(Player player) {
+        Location playerLocation = player.getLocation();
+        if(!playerLocation.getWorld().equals(islandWorld)) return null;
+        for(Island island : islandList) {
+            double distance = playerLocation.distance(island.getCenter());
+            if(distance <= island.getMaxRadius()) return island;
+        }
+        return null;
+    }
 }
