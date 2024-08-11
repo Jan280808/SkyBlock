@@ -3,12 +3,13 @@ version: '${project.version}'
 main: de.jan.skyblock.SkyBlock
 api-version: '1.21'
 author: Jan2808
-description: skyblock plugin
+description: SkyBlock plugin
 
 commands:
   island:
     permission: xxx.xxx
-    description: teleport player to island
+    description: manage all island related commands
+    usage: /island <subCommand>
   world:
     permission: xxx.xxx
     description: teleport player to world

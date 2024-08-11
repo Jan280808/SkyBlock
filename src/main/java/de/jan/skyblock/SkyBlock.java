@@ -1,7 +1,8 @@
 package de.jan.skyblock;
 
-import de.jan.skyblock.command.IslandCommand;
 import de.jan.skyblock.command.WorldCommand;
+import de.jan.skyblock.command.islandCommands.IslandCommand;
+import de.jan.skyblock.event.PlayerConnectionEvent;
 import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
 import lombok.Getter;
@@ -37,11 +38,11 @@ public final class SkyBlock extends JavaPlugin {
     }
 
     private void registerListener(PluginManager pluginManager) {
-
+        pluginManager.registerEvents(new PlayerConnectionEvent(playerManager), this);
     }
 
     private void registerCommands() {
-        Objects.requireNonNull(getCommand("island")).setExecutor(new IslandCommand(islandManager));
+        Objects.requireNonNull(getCommand("island")).setExecutor(new IslandCommand(islandManager, playerManager));
         Objects.requireNonNull(getCommand("world")).setExecutor(new WorldCommand());
     }
 }
