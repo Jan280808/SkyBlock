@@ -3,6 +3,7 @@ package de.jan.skyblock.command.islandCommands;
 import de.jan.skyblock.command.islandCommands.subcommand.SubCommands;
 import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
+import de.jan.skyblock.player.SkyPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -31,15 +32,17 @@ public class IslandCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof ConsoleCommandSender) return false;
         Player player = (Player) sender;
+        SkyPlayer skyPlayer = this.playerManager.getSkyPlayer(player.getUniqueId());
+
         if(args.length == 0) {
-            sendHelpInformation(player);
+            skyPlayer.teleportToIsland();
             return false;
         }
 
         String string = args[0].toLowerCase();
         IslandCommands islandCommands = subCommandMap.get(string);
         if(islandCommands != null) {
-            islandCommands.onCommand(islandManager, playerManager, player, args);
+            islandCommands.onCommand(islandManager, skyPlayer, player, args);
             return true;
 
         } else {
