@@ -19,6 +19,14 @@ public class SkyPlayer {
         this.island = island;
     }
 
+    public void teleportToIsland() {
+        if(island == null) {
+            getPlayer().sendMessage("Du hast noch keine Insel erstellt");
+            return;
+        }
+        island.teleport(this);
+    }
+
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }

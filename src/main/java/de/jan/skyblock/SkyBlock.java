@@ -38,7 +38,7 @@ public final class SkyBlock extends JavaPlugin {
     }
 
     private void registerListener(PluginManager pluginManager) {
-        pluginManager.registerEvents(new PlayerConnectionEvent(playerManager), this);
+        pluginManager.registerEvents(new PlayerConnectionEvent(islandManager, playerManager), this);
     }
 
     private void registerCommands() {
