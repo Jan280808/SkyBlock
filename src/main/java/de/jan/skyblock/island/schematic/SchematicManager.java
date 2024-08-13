@@ -1,6 +1,7 @@
 package de.jan.skyblock.island.schematic;
 
 import de.jan.skyblock.SkyBlock;
+import de.jan.skyblock.island.IslandManager;
 import org.bukkit.*;
 
 import java.util.ArrayList;
@@ -11,15 +12,15 @@ public class SchematicManager {
     private final List<Schematic> schematicList;
     private final World schematicWorld;
 
-    public SchematicManager() {
+    public SchematicManager(IslandManager islandManager) {
         this.schematicList = new ArrayList<>();
-        this.schematicWorld = Bukkit.createWorld(new WorldCreator("schematicWorld"));
+        this.schematicWorld = islandManager.generateVoidMap("schematicWorld");
         loadSchematic();
     }
 
     private void loadSchematic() {
-        Location point1 = new Location(schematicWorld, 18, 91, 64);
-        Location point2 = new Location(schematicWorld, 10, 100, 54);
+        Location point1 = new Location(schematicWorld, 9, 92, 53);
+        Location point2 = new Location(schematicWorld, 28, 103, 116);
         Schematic schematic = new Schematic(point1, point2, Category.ISLAND_NORMAL);
         this.schematicList.add(schematic);
 
