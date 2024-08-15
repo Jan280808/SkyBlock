@@ -22,6 +22,5 @@ public class PlayerConnectionEvent implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         SkyPlayer skyPlayer = playerManager.getSkyPlayer(player.getUniqueId());
-        islandManager.loadExistingIsland(skyPlayer);
     }
 }
