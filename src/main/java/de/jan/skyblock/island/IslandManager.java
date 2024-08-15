@@ -1,14 +1,14 @@
 package de.jan.skyblock.island;
 
 import de.jan.skyblock.SkyBlock;
+import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.island.schematic.Category;
-import de.jan.skyblock.island.schematic.Schematic;
 import de.jan.skyblock.island.schematic.SchematicManager;
+import de.jan.skyblock.island.world.DummyWorld;
 import de.jan.skyblock.island.world.WorldManager;
 import de.jan.skyblock.player.SkyPlayer;
 import lombok.Getter;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -28,49 +28,33 @@ public class IslandManager {
         this.islandList = new ArrayList<>();
     }
 
-    public void loadExistingIsland(SkyPlayer skyPlayer) {
-        World world = loadExistingWorld(skyPlayer.getUuid());
-        //if world is null then player has never created an island
-        if(world == null) return;
-
-        UUID worldUUID = UUID.nameUUIDFromBytes(world.getName().getBytes());
-        if(!worldUUID.equals(skyPlayer.getUuid())) return;
-        Island island = new Island(skyPlayer.getUuid(), world.getSpawnLocation());
-        this.islandList.add(island);
-        skyPlayer.setIsland(island);
-    }
-
     public void createNewIsland(SkyPlayer skyPlayer, Category category) {
-        if(skyPlayer.getIsland() != null) return;
-        World world = generateVoidMap(skyPlayer.getUuid().toString());
-        Location spawnLocation = world.getSpawnLocation();
+        float start = System.currentTimeMillis();
+        if(skyPlayer.getIsland() != null) {
+            skyPlayer.getPlayer().sendMessage(ComponentSerializer.deserialize("<red>You already have an island"));
+            return;
+        }
 
-        //create and safe islandObject
-        Island island = new Island(skyPlayer.getUuid(), spawnLocation);
-        this.islandList.add(island);
+        DummyWorld dummyWorld = worldManager.getDummyWorldWithFreeSlot();
+        int id = dummyWorld.currentIsland()+1;
+        int x = 0; int z = 0;
+        for(int i = 1; i < id; i++) {
+            x = 50*i;
+            z = 50*i;
+        }
+
+        Location location = new Location(dummyWorld.getWorld(), x, 100, z);
+        Island island = new Island(id, dummyWorld.getWorld(), skyPlayer.getUuid(), location);
+        islandList.add(island);
+        dummyWorld.addIsland(island);
+
+        //place schematic on island
+        schematicManager.generateSchematic(island, category);
+
         skyPlayer.setIsland(island);
-
-        //load schematic in new voidMap
-        long start = System.currentTimeMillis();
-        Schematic schematic = schematicManager.getSchematic(category);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SkyBlock.instance, () -> {
-            schematic.blockList().forEach(block -> {
-                Location schematicCenter = schematic.getCenter();
-                int deltaX = block.getX() - schematicCenter.getBlockX();
-                int deltaY = block.getY() - schematicCenter.getBlockY();
-                int deltaZ = block.getZ() - schematicCenter.getBlockZ();
-                Location newBlockLocation = spawnLocation.clone().add(deltaX, deltaY, deltaZ);
-                Block newBlock = world.getBlockAt(newBlockLocation);
-                newBlock.setType(block.getType());
-                newBlock.setBlockData(block.getBlockData());
-
-                //chest copy
-            });
-        }, 0);
-        long time = System.currentTimeMillis()-start;
-        SkyBlock.Logger.info("copy paste: {}ms", time);
-        //teleport player to island
         skyPlayer.teleportToIsland();
+        float time = start - System.currentTimeMillis();
+        SkyBlock.Logger.info("time: {}", time);
     }
 
     private void safeIsland() {

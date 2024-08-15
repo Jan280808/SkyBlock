@@ -19,12 +19,7 @@ public class WorldManager {
         this.dummyList = new ArrayList<>();
     }
 
-    public void addIslandToDummyWorld(Island island) {
-        DummyWorld dummyWorld = getWorldWithFreeIslandSlot();
-        dummyWorld.addIsland(island);
-    }
-
-    private DummyWorld getWorldWithFreeIslandSlot() {
+    public DummyWorld getDummyWorldWithFreeSlot() {
         Optional<DummyWorld> optionalWorld = dummyList.stream().filter(dummyWorld -> dummyWorld != null && dummyWorld.haveFreeSlot()).findFirst();
         if(optionalWorld.isPresent()) return optionalWorld.get();
         DummyWorld dummyWorld = new DummyWorld(generateVoidMap("dummyWorld" + dummyList.size()), 5);
@@ -32,7 +27,7 @@ public class WorldManager {
         return dummyWorld;
     }
 
-    private World generateVoidMap(String worldName) {
+    public World generateVoidMap(String worldName) {
         if(Bukkit.getWorld(worldName) != null) return Bukkit.getWorld(worldName);
         WorldCreator worldCreator = new WorldCreator(worldName);
         worldCreator.generator(new VoidGenerator());
