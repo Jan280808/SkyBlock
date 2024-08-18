@@ -19,12 +19,13 @@ public class SkyPlayer {
         this.island = island;
     }
 
-    public void teleportToIsland() {
+    public boolean teleportToIsland() {
         if(island == null) {
             getPlayer().sendMessage("Du hast noch keine Insel erstellt");
-            return;
+            return false;
         }
         island.teleport(this);
+        return true;
     }
 
     public Player getPlayer() {

@@ -62,6 +62,12 @@
 
   <dependencies>
       <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.18.34</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
           <groupId>io.papermc.paper</groupId>
           <artifactId>paper-api</artifactId>
           <version>1.21-R0.1-SNAPSHOT</version>
@@ -71,12 +77,6 @@
           <groupId>com.mojang</groupId>
           <artifactId>authlib</artifactId>
           <version>1.5.21</version>
-          <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.projectlombok</groupId>
-          <artifactId>lombok</artifactId>
-          <version>1.18.34</version>
           <scope>provided</scope>
       </dependency>
       <dependency>
