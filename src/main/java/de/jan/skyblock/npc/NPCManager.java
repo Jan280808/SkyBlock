@@ -1,6 +1,8 @@
 package de.jan.skyblock.npc;
 
 import lombok.Getter;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +16,13 @@ public class NPCManager {
         this.npcList = new ArrayList<>();
     }
 
-    public void despawnAllNPC() {
-        this.npcList.forEach(NPC::despawn);
+    public NPC createNPC(String displayName, EntityType entityType, Location location, Type type, NPCInteractHandler interactionHandler) {
+        NPC npc = new NPC(displayName, entityType, location, type, interactionHandler);
+        this.npcList.add(npc);
+        return npc;
     }
 
-    public void registerNPC(NPC npc) {
-        this.npcList.add(npc);
+    public void despawnAllNPC() {
+        this.npcList.forEach(NPC::despawn);
     }
 }
