@@ -16,14 +16,16 @@ public class NPC {
     private final Component displayName;
     private final EntityType entityType;
     private final Location location;
+    private final Type type;
     private final NPCInteractHandler interactionHandler;
 
     private LivingEntity livingEntity;
 
-    public NPC(String displayName, EntityType entityType, Location location, NPCInteractHandler interactionHandler) {
+    public NPC(String displayName, EntityType entityType, Location location, Type type, NPCInteractHandler interactionHandler) {
         this.displayName = ComponentSerializer.deserialize(displayName);
         this.entityType = entityType;
         this.location = location;
+        this.type = type;
         this.interactionHandler = interactionHandler;
         spawn();
     }
@@ -44,6 +46,6 @@ public class NPC {
         livingEntity = (LivingEntity) Objects.requireNonNull(location.getWorld()).spawnEntity(location, entityType);
         livingEntity.setAI(false);
         livingEntity.setCustomNameVisible(true);
-        livingEntity.customName(displayName);
+        livingEntity.customName(displayName.append(Component.text(type.name())));
     }
 }
