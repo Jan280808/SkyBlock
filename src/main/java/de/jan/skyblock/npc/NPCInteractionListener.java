@@ -1,6 +1,5 @@
 package de.jan.skyblock.npc;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,10 +25,6 @@ public class NPCInteractionListener implements Listener {
             if(player.isSneaking()) interactType = InteractType.SHIFT_RIGHT;
             else interactType = InteractType.RIGHT;
             npc.interact(player, interactType);
-
-            //NPCInteractEvent npcInteractEvent = new NPCInteractEvent(player, npc, interactType);
-            //Bukkit.getPluginManager().callEvent(npcInteractEvent);
-            //if(npcInteractEvent.isCanceled()) event.setCancelled(true);
         });
     }
 
@@ -39,13 +34,11 @@ public class NPCInteractionListener implements Listener {
         Player player = (Player) event.getDamager();
         Entity damagedEntity = event.getEntity();
 
-        npcManager.getNpcList().stream().filter(npc -> npc.getLivingEntity() != null && npc.getEntityType().equals(damagedEntity.getType()) && damagedEntity.customName() != null && npc.getDisplayName().equals(damagedEntity.customName())).forEach(npc -> {
+        npcManager.getNpcList().stream().filter(npc -> npc.getLivingEntity() != null && npc.getEntityType().equals(damagedEntity.getType()) && damagedEntity.customName() != null && npc.getDisplayName().equals(damagedEntity.customName()) && npc.getLocation().equals(damagedEntity.getLocation())).forEach(npc -> {
             InteractType interactType;
             if(player.isSneaking()) interactType = InteractType.SHIFT_LEFT;
             else interactType = InteractType.LEFT;
-            NPCInteractEvent npcInteractEvent = new NPCInteractEvent(player, npc, interactType);
-            Bukkit.getPluginManager().callEvent(npcInteractEvent);
-            if(npcInteractEvent.isCanceled()) event.setCancelled(true);
+            npc.interact(player, interactType);
         });
     }
 }
