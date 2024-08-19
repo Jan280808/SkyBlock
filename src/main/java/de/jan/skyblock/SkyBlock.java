@@ -10,6 +10,7 @@ import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.npc.NPCManager;
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.spawn.SpawnIsland;
+import de.jan.skyblock.event.PlayerInventoryEvent;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -54,6 +55,7 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new PlayerConnectionEvent(islandManager, playerManager), this);
         pluginManager.registerEvents(new NPCInteractionListener(npcManager), this);
         pluginManager.registerEvents(new EnterPortalEvent(playerManager), this);
+        pluginManager.registerEvents(new PlayerInventoryEvent(spawnIsland.getShopManager()), this);
     }
 
     private void registerCommands() {
