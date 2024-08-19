@@ -19,8 +19,8 @@ public class Island {
     private final World world;
     private final UUID owner;
     private final Location center;
-    private int maxRadius;
-    private String createDate;
+    private final int maxRadius;
+    private final String createDate;
 
     public Island(int id, World world, UUID owner, Location center) {
         this.id = id;
