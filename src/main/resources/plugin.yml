@@ -15,3 +15,5 @@ commands:
     description: teleport player to world
   spawn:
     description: teleport player to spawn
+  trade:
+    description: open trade system for safe trading between two players
