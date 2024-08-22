@@ -46,6 +46,6 @@ public class NPC {
         livingEntity = (LivingEntity) Objects.requireNonNull(location.getWorld()).spawnEntity(location, entityType);
         livingEntity.setAI(false);
         livingEntity.setCustomNameVisible(true);
-        livingEntity.customName(displayName.append(Component.text(type.name())));
+        livingEntity.customName(displayName);
     }
 }
