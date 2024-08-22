@@ -1,12 +1,12 @@
 package de.jan.skyblock.spawn.shop;
 
-import de.jan.skyblock.player.SkyPlayer;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class Shop {
     private final Inventory inventory;
     private final List<ShopItem> shopItems;
 
-    public Shop(Component shopName, List<ShopItem> shopItems) {
+    public Shop(Component shopName, @NotNull List<ShopItem> shopItems) {
         this.shopName = shopName;
         this.inventory = Bukkit.createInventory(null, 54, this.shopName);
         this.shopItems = shopItems;
@@ -30,11 +30,12 @@ public class Shop {
         });
     }
 
-    public void openShop(SkyPlayer skyPlayer) {
-        skyPlayer.getPlayer().openInventory(inventory);
+    public void openShop(Player player) {
+        player.openInventory(inventory);
     }
 
     private void setShopItems() {
+        if(shopItems.isEmpty()) return;
         shopItems.forEach(shopItem -> inventory.addItem(shopItem.required()));
     }
 }
