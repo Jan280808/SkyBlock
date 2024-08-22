@@ -25,6 +25,7 @@ public class NPCInteractionListener implements Listener {
             if(player.isSneaking()) interactType = InteractType.SHIFT_RIGHT;
             else interactType = InteractType.RIGHT;
             npc.interact(player, interactType);
+            event.setCancelled(true);
         });
     }
 
@@ -39,6 +40,7 @@ public class NPCInteractionListener implements Listener {
             if(player.isSneaking()) interactType = InteractType.SHIFT_LEFT;
             else interactType = InteractType.LEFT;
             npc.interact(player, interactType);
+            event.setCancelled(true);
         });
     }
 }
