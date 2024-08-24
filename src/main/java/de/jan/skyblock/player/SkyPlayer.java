@@ -1,6 +1,7 @@
 package de.jan.skyblock.player;
 
 import de.jan.skyblock.island.Island;
+import de.jan.skyblock.location.Locations;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ public class SkyPlayer {
 
     private final UUID uuid;
     private Island island;
+    private Locations currentLocation;
 
     public SkyPlayer(UUID uuid, Island island) {
         this.uuid = uuid;

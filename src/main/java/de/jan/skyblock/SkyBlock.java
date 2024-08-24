@@ -6,6 +6,8 @@ import de.jan.skyblock.command.WorldCommand;
 import de.jan.skyblock.command.islandCommands.IslandCommand;
 import de.jan.skyblock.event.EnterPortalEvent;
 import de.jan.skyblock.event.PlayerConnectionEvent;
+import de.jan.skyblock.event.PlayerDamageEvent;
+import de.jan.skyblock.spawn.SpawnIslandEvent;
 import de.jan.skyblock.npc.NPCInteractionListener;
 import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.npc.NPCManager;
@@ -57,11 +59,13 @@ public final class SkyBlock extends JavaPlugin {
     }
 
     private void registerListener(PluginManager pluginManager) {
-        pluginManager.registerEvents(new PlayerConnectionEvent(islandManager, playerManager), this);
+        pluginManager.registerEvents(new PlayerConnectionEvent(playerManager, spawnIsland), this);
         pluginManager.registerEvents(new NPCInteractionListener(npcManager), this);
         pluginManager.registerEvents(new EnterPortalEvent(playerManager), this);
         pluginManager.registerEvents(new PlayerInventoryEvent(spawnIsland.getShopManager()), this);
         pluginManager.registerEvents(new TradeEvent(tradeManager), this);
+        pluginManager.registerEvents(new SpawnIslandEvent(playerManager, spawnIsland), this);
+        pluginManager.registerEvents(new PlayerDamageEvent(playerManager), this);
     }
 
     private void registerCommands() {

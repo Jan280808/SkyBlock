@@ -1,6 +1,7 @@
 package de.jan.skyblock.spawn;
 
 import de.jan.skyblock.SkyBlock;
+import de.jan.skyblock.location.Locations;
 import de.jan.skyblock.npc.Type;
 import de.jan.skyblock.player.SkyPlayer;
 import de.jan.skyblock.spawn.shop.Shop;
@@ -13,7 +14,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 
 @Getter
-public class SpawnIsland {
+public class SpawnIsland implements Locations {
 
     private final Location location;
     private final ShopManager shopManager;
@@ -29,6 +30,7 @@ public class SpawnIsland {
     public void teleport(SkyPlayer skyPlayer) {
         if(location == null) return;
         skyPlayer.getPlayer().teleport(location);
+        skyPlayer.setCurrentLocation(this);
     }
 
     private Location readJson() {
@@ -41,4 +43,8 @@ public class SpawnIsland {
         });
     }
 
+    @Override
+    public String locationName() {
+        return "spawnIsland";
+    }
 }
