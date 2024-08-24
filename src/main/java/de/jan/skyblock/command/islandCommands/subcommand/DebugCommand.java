@@ -20,7 +20,7 @@ public class DebugCommand implements IslandCommands {
         Inventory inventory = Bukkit.createInventory(null, 54, ComponentSerializer.deserialize("islands"));
         islandManager.getIslandList().forEach(island -> {
             String ownerName = Objects.requireNonNull(Bukkit.getPlayer(island.getOwner())).getName();
-            inventory.addItem(new ItemBuilder(Material.PLAYER_HEAD).setSkull("Island").setDisplayName("island").setLore("<gray>id: " + island.getId(), "<gray>World: " + island.getWorld().getName(), "<gray>Owner: " + ownerName).build());
+            inventory.addItem(new ItemBuilder(Material.PLAYER_HEAD).setSkull("Island").setDisplayName("island").setLore("<gray>id: " + island.getId(), "<gray>World: " + island.getWorld().getName(), "<gray>Owner: " + ownerName, "<gray>Location: " + skyPlayer.getCurrentLocation().locationName()).build());
         });
         player.openInventory(inventory);
     }
