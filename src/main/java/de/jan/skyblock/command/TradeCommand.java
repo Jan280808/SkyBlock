@@ -25,38 +25,28 @@ public class TradeCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof ConsoleCommandSender) return false;
-        Player player = (Player) sender;
+        Player requester = (Player) sender;
 
         if(args.length == 0) {
-            player.sendMessage("/trade send/accept/deny <player>");
+            requester.sendMessage("/trade send/accept/deny <player>");
             return false;
         }
 
         if(args.length == 2) {
-            player.sendMessage("debug1");
             String playerName = args[1];
-            UUID uuid = Bukkit.getPlayerUniqueId(playerName);
-            player.sendMessage("string: " + playerName);
-            player.sendMessage("stringID: " + uuid);
-            if(uuid == null) return false;
-            Player recipient = Bukkit.getPlayer(uuid);
+            Player recipient = getPlayerByName(requester, playerName);
             if(recipient == null) return false;
-            player.sendMessage("debug2");
-            player.sendMessage("player: " + recipient);
             switch(args[0]) {
                 case "send" -> {
-                    tradeManager.sendRequest(player, recipient);
-                    player.sendMessage("send");
+                    tradeManager.sendRequest(requester, recipient);
                     return true;
                 }
                 case "accept" -> {
-                    tradeManager.acceptRequest(player, recipient);
-                    player.sendMessage("accept");
+                    tradeManager.acceptRequest(requester, recipient);
                     return true;
                 }
                 case "deny" -> {
-                    tradeManager.denyRequest(player, recipient);
-                    player.sendMessage("deny");
+                    tradeManager.denyRequest(requester, recipient);
                     return true;
                 }
             }
@@ -69,7 +59,21 @@ public class TradeCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof ConsoleCommandSender) return null;
         if(args.length == 1) return List.of("send", "accept", "deny");
-        if(args.length == 2) return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+        if(args.length == 2) return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(name -> !name.equals(sender.getName())).collect(Collectors.toList());
         return List.of("");
+    }
+
+    private Player getPlayerByName(Player requester, String playerName) {
+        UUID uuid = Bukkit.getPlayerUniqueId(playerName);
+        Player recipient = uuid != null ? Bukkit.getPlayer(uuid) : null;
+        if(recipient == null || !recipient.isOnline()) {
+            requester.sendMessage("Der Spieler " + playerName + " wurde nicht gefunden");
+            return null;
+        }
+        if(requester.equals(recipient)) {
+            requester.sendMessage("Du kannst nicht mit dir selbst handeln");
+            return null;
+        }
+        return recipient;
     }
 }
