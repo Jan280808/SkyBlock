@@ -19,18 +19,24 @@ public class SkyPlayer {
     public SkyPlayer(UUID uuid, Island island) {
         this.uuid = uuid;
         this.island = island;
+        currentLocation = new UnknownLocation();
     }
 
     public boolean teleportToIsland() {
-        if(island == null) {
-            getPlayer().sendMessage("Du hast noch keine Insel erstellt");
-            return false;
-        }
+        if(island == null) return false;
         island.teleport(this);
         return true;
     }
 
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
+    }
+
+    public static class UnknownLocation implements Locations {
+
+        @Override
+        public String locationName() {
+            return "unKnown";
+        }
     }
 }
