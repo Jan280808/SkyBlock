@@ -1,6 +1,8 @@
 package de.jan.skyblock.command.islandCommands;
 
+import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.command.islandCommands.subcommand.SubCommands;
+import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.player.SkyPlayer;
@@ -35,7 +37,8 @@ public class IslandCommand implements TabExecutor {
         SkyPlayer skyPlayer = this.playerManager.getSkyPlayer(player.getUniqueId());
 
         if(args.length == 0) {
-            skyPlayer.teleportToIsland();
+            if(skyPlayer.teleportToIsland()) return true;
+            sendHelpInformation(player);
             return false;
         }
 
@@ -59,7 +62,7 @@ public class IslandCommand implements TabExecutor {
     }
 
     private void sendHelpInformation(Player player) {
-        subCommandMap.forEach((string, islandCommands) -> player.sendMessage("/island <" + string + ">"));
+        subCommandMap.forEach((string, islandCommands) -> player.sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<gray>/island <" + string + ">"))));
     }
 
     private void registerSubCommands() {

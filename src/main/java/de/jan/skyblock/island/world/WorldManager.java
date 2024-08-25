@@ -1,6 +1,8 @@
 package de.jan.skyblock.island.world;
 
+import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.island.Island;
+import de.jan.skyblock.island.IslandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -8,21 +10,57 @@ import org.bukkit.WorldType;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.*;
 
 public class WorldManager {
 
+    private final IslandManager islandManager;
     private final List<DummyWorld> dummyList;
+    private final int maxIslandPerWorld = 1;
 
-    public WorldManager() {
+    public WorldManager(IslandManager islandManager) {
+        this.islandManager = islandManager;
         this.dummyList = new ArrayList<>();
+        load();
+    }
+
+    private void load() {
+        for(Island island : islandManager.getIslandList()) {
+            World islandWorld = island.getWorld();
+
+        }
+
+        // Eine Map, um DummyWorld-Objekte nach World zu speichern
+        Map<World, DummyWorld> worldToDummyWorldMap = new HashMap<>();
+
+        // Durchlaufe alle Inseln und erstelle DummyWorld-Objekte
+        for (Island island : islandManager.getIslandList()) {
+            World world = island.getWorld();
+
+            // Wenn kein DummyWorld für diese Welt existiert, erstelle einen neuen
+            DummyWorld dummyWorld = worldToDummyWorldMap.get(world);
+            if (dummyWorld == null) {
+                dummyWorld = new DummyWorld(world, maxIslandPerWorld);
+                worldToDummyWorldMap.put(world, dummyWorld);
+                dummyList.add(dummyWorld);
+            }
+
+            // Füge die Insel zur entsprechenden DummyWorld hinzu
+            dummyWorld.addIsland(island);
+        }
+
+        // Logging der Ergebnisse
+        /*
+        for (DummyWorld dummyWorld : dummyList) {
+            SkyBlock.Logger.info("world:" + dummyWorld.getWorld().getName() + ", islands: " + dummyWorld.getIslandList().size());
+        }
+         */
     }
 
     public DummyWorld getDummyWorldWithFreeSlot() {
         Optional<DummyWorld> optionalWorld = dummyList.stream().filter(dummyWorld -> dummyWorld != null && dummyWorld.haveFreeSlot()).findFirst();
         if(optionalWorld.isPresent()) return optionalWorld.get();
-        DummyWorld dummyWorld = new DummyWorld(generateVoidMap("dummyWorld" + dummyList.size()), 5);
+        DummyWorld dummyWorld = new DummyWorld(generateVoidMap("dummyWorld" + dummyList.size()), maxIslandPerWorld);
         this.dummyList.add(dummyWorld);
         return dummyWorld;
     }
@@ -35,13 +73,6 @@ public class WorldManager {
         worldCreator.type(WorldType.FLAT);
         worldCreator.generateStructures(false);
         return Bukkit.getServer().createWorld(worldCreator);
-    }
-
-    private World loadExistingWorld(UUID uuid) {
-        File worldFolder = new File(Bukkit.getWorldContainer(), uuid.toString());
-        //checks whether the world really exists in the folder, otherwise a new one is created when loading
-        if(!worldFolder.exists() && !worldFolder.isDirectory()) return null;
-        return Bukkit.createWorld(new WorldCreator(uuid.toString()));
     }
 
     //generate chunks with nothing "void"

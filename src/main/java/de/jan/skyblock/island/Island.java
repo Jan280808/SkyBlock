@@ -4,10 +4,7 @@ import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.location.Locations;
 import de.jan.skyblock.player.SkyPlayer;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import org.bukkit.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,15 +13,18 @@ import java.util.UUID;
 @Getter
 public class Island implements Locations {
 
-    private int id;
-    private final World world;
+    private final int id;
+    private final String worldName;
     private final UUID owner;
     private final Location center;
     private final int maxRadius;
     private final String createDate;
 
+    private World world;
+
     public Island(int id, World world, UUID owner, Location center) {
         this.id = id;
+        this.worldName = world.getName();
         this.world = world;
         this.owner = owner;
         this.center = center;
@@ -33,9 +33,35 @@ public class Island implements Locations {
         playBoarder();
     }
 
+    public Island(int id, String worldName, UUID owner, Location center) {
+        this.id = id;
+        this.worldName = worldName;
+        this.owner = owner;
+        this.center = center;
+        this.maxRadius = 50;
+        this.createDate = new SimpleDateFormat("dd,MM,yy").format(new Date());
+        playBoarder();
+    }
+
+    public Island(int id, String worldName, UUID owner, Location center, String createDate) {
+        this.id = id;
+        this.worldName = worldName;
+        this.owner = owner;
+        this.center = center;
+        this.maxRadius = 50;
+        this.createDate = createDate;
+        //playBoarder();
+    }
+
     public void teleport(SkyPlayer skyPlayer) {
+        loadWorld();
         skyPlayer.getPlayer().teleport(center);
         skyPlayer.setCurrentLocation(this);
+    }
+
+    private void loadWorld() {
+        if(world != null) return;
+        world = Bukkit.createWorld(new WorldCreator(worldName));
     }
 
     //not final way to display the boarder of an island

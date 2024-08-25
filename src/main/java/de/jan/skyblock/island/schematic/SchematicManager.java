@@ -2,7 +2,7 @@ package de.jan.skyblock.island.schematic;
 
 import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.island.Island;
-import de.jan.skyblock.island.IslandManager;
+import de.jan.skyblock.island.world.WorldManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -17,9 +17,9 @@ public class SchematicManager {
     private final List<Schematic> schematicList;
     private final World schematicWorld;
 
-    public SchematicManager(IslandManager islandManager) {
+    public SchematicManager(WorldManager worldManager) {
         this.schematicList = new ArrayList<>();
-        this.schematicWorld = islandManager.getWorldManager().generateVoidMap("schematicWorld");
+        this.schematicWorld = worldManager.generateVoidMap("schematicWorld");
         loadSchematic();
     }
 
