@@ -2,6 +2,7 @@ package de.jan.skyblock.spawn;
 
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.player.SkyPlayer;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class SpawnIslandEvent implements Listener {
 
@@ -54,4 +56,12 @@ public class SpawnIslandEvent implements Listener {
         if(!skyPlayer.getCurrentLocation().equals(spawnIsland)) return;
         event.setCancelled(true);
     }
+
+    @EventHandler
+    public void onWeather(WeatherChangeEvent event) {
+        World world =  event.getWorld();
+        if(!world.equals(spawnIsland.getLocation().getWorld())) return;
+        event.setCancelled(true);
+    }
+
 }
