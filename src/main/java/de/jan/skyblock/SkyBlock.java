@@ -1,9 +1,11 @@
 package de.jan.skyblock;
 
+import de.jan.skyblock.command.DisplayCommand;
 import de.jan.skyblock.command.SpawnCommand;
 import de.jan.skyblock.command.TradeCommand;
 import de.jan.skyblock.command.WorldCommand;
 import de.jan.skyblock.command.islandCommands.IslandCommand;
+import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.event.EnterPortalEvent;
 import de.jan.skyblock.event.PlayerConnectionEvent;
 import de.jan.skyblock.event.PlayerDamageEvent;
@@ -16,7 +18,9 @@ import de.jan.skyblock.spawn.SpawnIsland;
 import de.jan.skyblock.event.PlayerInventoryEvent;
 import de.jan.skyblock.trade.TradeEvent;
 import de.jan.skyblock.trade.TradeManager;
+import de.jan.skyblock.trade.display.DisplayEvent;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +34,7 @@ public final class SkyBlock extends JavaPlugin {
 
     public static SkyBlock instance;
     public static final Logger Logger = LoggerFactory.getLogger("SkyBlock");
+    public static Component Prefix = ComponentSerializer.deserialize("<gradient:green:blue>SkyBlock <dark_gray>● ");
     private PlayerManager playerManager;
     private NPCManager npcManager;
     private IslandManager islandManager;
@@ -43,13 +48,13 @@ public final class SkyBlock extends JavaPlugin {
         instance = this;
         islandManager = new IslandManager();
         npcManager = new NPCManager();
-        playerManager = new PlayerManager();
+        playerManager = new PlayerManager(islandManager);
         spawnIsland = new SpawnIsland();
         tradeManager = new TradeManager();
         registerListener(Bukkit.getPluginManager());
         registerCommands();
         float time = start-System.currentTimeMillis();
-        Logger.info("startup from SkyBlock finish in: {}", time);
+        Logger.info("SkyBlock finish in: {}", time);
     }
 
     @Override
@@ -66,6 +71,7 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new TradeEvent(tradeManager), this);
         pluginManager.registerEvents(new SpawnIslandEvent(playerManager, spawnIsland), this);
         pluginManager.registerEvents(new PlayerDamageEvent(playerManager), this);
+        pluginManager.registerEvents(new DisplayEvent(tradeManager), this);
     }
 
     private void registerCommands() {
@@ -73,5 +79,6 @@ public final class SkyBlock extends JavaPlugin {
         Objects.requireNonNull(getCommand("world")).setExecutor(new WorldCommand());
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand(playerManager, spawnIsland));
         Objects.requireNonNull(getCommand("trade")).setExecutor(new TradeCommand(tradeManager));
+        Objects.requireNonNull(getCommand("display")).setExecutor(new DisplayCommand(tradeManager));
     }
 }

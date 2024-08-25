@@ -1,5 +1,8 @@
 package de.jan.skyblock.trade;
 
+import de.jan.skyblock.component.ComponentSerializer;
+import de.jan.skyblock.trade.display.DisplayManager;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -13,14 +16,19 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.*;
 
+@Getter
 public class TradeManager {
 
     private final Map<UUID, UUID> tradeMap;
     private final List<Trade> currentTrades;
+    public static Component Prefix = ComponentSerializer.deserialize("<gradient:gold:gray>Trade <dark_gray>● <gray>");
+
+    private final DisplayManager displayManager;
 
     public TradeManager() {
         this.tradeMap = new HashMap<>();
         this.currentTrades = new ArrayList<>();
+        this.displayManager = new DisplayManager(this);
     }
 
     public void sendRequest(Player requester, Player recipient) {

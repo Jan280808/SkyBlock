@@ -9,7 +9,6 @@ commands:
   island:
     permission: xxx.xxx
     description: manage all island related commands
-    usage: /island <subCommand>
   world:
     permission: xxx.xxx
     description: teleport player to world
@@ -17,3 +16,5 @@ commands:
     description: teleport player to spawn
   trade:
     description: open trade system for safe trading between two players
+  display:
+    description: open inventory from display
