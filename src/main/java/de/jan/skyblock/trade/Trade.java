@@ -3,11 +3,12 @@ package de.jan.skyblock.trade;
 import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.builder.ItemBuilder;
 import de.jan.skyblock.component.ComponentSerializer;
+import de.jan.skyblock.sound.SoundManager;
+import de.jan.skyblock.sound.Sounds;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -33,7 +34,7 @@ public class Trade {
     public Trade(Player requester, Player recipient) {
         this.requester = requester;
         this.recipient = recipient;
-        this.inventory = Bukkit.createInventory(null, 54, ComponentSerializer.deserialize("Trade:"));
+        this.inventory = Bukkit.createInventory(null, 54, ComponentSerializer.deserialize("Handel: " + requester.getName() + " - " + recipient.getName()));
         this.requestStatus = new AcceptStatus(requester, inventory, 47);
         this.recipientStatus = new AcceptStatus(recipient, inventory, 51);
         setupInventory();
@@ -107,8 +108,7 @@ public class Trade {
                     break;
                 }
             }
-            requester.playSound(requester, Sound.BLOCK_NOTE_BLOCK_BELL, timer, 1);
-            recipient.playSound(recipient, Sound.BLOCK_NOTE_BLOCK_BELL, timer, 1);
+            SoundManager.playSound(Sounds.TRADE_LOADING, requester, recipient);
             timer--;
         },0 , 20);
     }
@@ -173,7 +173,7 @@ public class Trade {
             this.inventory = inventory;
             this.slot = slot;
             this.accepted = false;
-            this.notYetAcceptedStack = new ItemBuilder(Material.WHITE_CONCRETE).setDisplayName("<gray>Noch nicht Akzeptiert").setLore("<gray>click to <green>accept <gray>the trade").build();
+            this.notYetAcceptedStack = new ItemBuilder(Material.WHITE_CONCRETE).setDisplayName("<gray>Noch nicht Akzeptiert").setLore("<gray>Klick um den Handel zu <green>akzeptieren").build();
             this.acceptedStack = new ItemBuilder(Material.LIME_CONCRETE).setDisplayName("<green>Handel Akzeptiert").build();
         }
 
@@ -182,12 +182,14 @@ public class Trade {
             if(clickItem.equals(notYetAcceptedStack)) {
                 accepted = true;
                 inventory.setItem(slot, acceptedStack);
+                SoundManager.playSound(Sounds.TRADE_ACCEPT, player);
             }
         }
 
         public void reset() {
             accepted = false;
             inventory.setItem(slot, notYetAcceptedStack);
+            SoundManager.playSound(Sounds.TRADE_RESET, player);
         }
     }
 }

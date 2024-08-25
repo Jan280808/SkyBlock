@@ -1,5 +1,9 @@
 package de.jan.skyblock.command;
 
+import de.jan.skyblock.SkyBlock;
+import de.jan.skyblock.component.ComponentSerializer;
+import de.jan.skyblock.sound.SoundManager;
+import de.jan.skyblock.sound.Sounds;
 import de.jan.skyblock.trade.TradeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -28,7 +32,7 @@ public class TradeCommand implements TabExecutor {
         Player requester = (Player) sender;
 
         if(args.length == 0) {
-            requester.sendMessage("/trade send/accept/deny <player>");
+            requester.sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<gray>/trade <subCommand> <player>")));
             return false;
         }
 
@@ -67,11 +71,13 @@ public class TradeCommand implements TabExecutor {
         UUID uuid = Bukkit.getPlayerUniqueId(playerName);
         Player recipient = uuid != null ? Bukkit.getPlayer(uuid) : null;
         if(recipient == null || !recipient.isOnline()) {
-            requester.sendMessage("Der Spieler " + playerName + " wurde nicht gefunden");
+            requester.sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<red>Der Spieler <gray>" + playerName + " <red>wurde nicht gefunden")));
+            SoundManager.playSound(Sounds.ERROR, requester);
             return null;
         }
         if(requester.equals(recipient)) {
-            requester.sendMessage("Du kannst nicht mit dir selbst handeln");
+            requester.sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<red>Du kannst nicht mit dir selber handeln")));
+            SoundManager.playSound(Sounds.ERROR, requester);
             return null;
         }
         return recipient;
