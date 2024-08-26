@@ -32,6 +32,10 @@ public class SkyPlayer {
         return Bukkit.getPlayer(uuid);
     }
 
+    public boolean isOnline() {
+        return getPlayer().isOnline();
+    }
+
     public static class UnknownLocation implements Locations {
 
         @Override
