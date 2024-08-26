@@ -1,12 +1,10 @@
 package de.jan.skyblock.command;
 
-import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.sound.SoundManager;
 import de.jan.skyblock.sound.Sounds;
 import de.jan.skyblock.trade.TradeManager;
 import de.jan.skyblock.trade.display.DisplayManager;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

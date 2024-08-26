@@ -24,9 +24,9 @@ public class DisplayItem {
     public DisplayItem(Player player, DisplayCode displayCode, ItemStack offerStack) {
         this.player = player;
         this.displayCode = displayCode;
-        this.inventory = Bukkit.createInventory(player, 27, ComponentSerializer.deserialize("<gray>Display from " + player.getName()));
-        this.tpaStack = new ItemBuilder(Material.ENDER_PEARL).setDisplayName("").build();
-        this.tradeStack = new ItemBuilder(Material.EMERALD).setDisplayName("").build();
+        this.inventory = Bukkit.createInventory(player, 27, ComponentSerializer.deserialize("<gray>Display von " + player.getName()));
+        this.tpaStack = new ItemBuilder(Material.ENDER_PEARL).setDisplayName("<gray>Sende dem Spieler eine TPA-Anfrage").build();
+        this.tradeStack = new ItemBuilder(Material.EMERALD).setDisplayName("<gray>Sende dem Spieler eine Trade-Anfrage").build();
         this.createTime = System.currentTimeMillis();
         setupInventory(offerStack);
     }
