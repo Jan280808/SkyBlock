@@ -1,6 +1,7 @@
 package de.jan.skyblock.builder;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.jan.skyblock.SkyBlock;
@@ -15,12 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
-import org.bukkit.potion.PotionType;
-import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.util.*;
 
 public class ItemBuilder {
@@ -78,26 +76,25 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setPlayerHeadTexture(@NotNull URL skinTextureURL) {
-        if(Material.PLAYER_HEAD.equals(this.itemStack.getType())) {
-            PlayerProfile playerProfile = Bukkit.createProfile(UUID.randomUUID());
-            PlayerTextures playerTextures = playerProfile.getTextures();
-            playerTextures.setSkin(skinTextureURL);
-            playerProfile.setTextures(playerTextures);
-
-            SkullMeta skullMeta = (SkullMeta) itemMeta;
-            skullMeta.setPlayerProfile(playerProfile);
-            itemStack.setItemMeta(itemMeta);
-            return this;
-        }
+    public ItemBuilder setSkull(@NotNull Player player) {
+        if(!itemStack.getType().equals(Material.PLAYER_HEAD)) throw new IllegalArgumentException("Material " + itemStack.getType() + " must be an " + Material.PLAYER_HEAD);
+        String texture = getTexture(player);
+        if(texture == null) return this;
+        PlayerProfile profile = Bukkit.getServer().createProfile(UUID.nameUUIDFromBytes(texture.getBytes()), player.getName());
+        profile.setProperty(new ProfileProperty("textures", texture));
+        profile.complete(true, true);
+        SkullMeta skullMeta = (SkullMeta) itemMeta;
+        skullMeta.setPlayerProfile(profile);
+        itemStack.setItemMeta(skullMeta);
         return this;
     }
 
-    public ItemBuilder setSkull(@NotNull Player player) {
-        if(!itemStack.getType().equals(Material.PLAYER_HEAD)) throw new IllegalArgumentException("Material " + itemStack.getType() + " must be an " + Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) itemMeta;
-        skullMeta.setPlayerProfile(player.getPlayerProfile());
-        return this;
+    private String getTexture(Player player) {
+        PlayerProfile profile = player.getPlayerProfile();
+        for(ProfileProperty property : profile.getProperties()) {
+            if(property.getName().equals("textures")) return property.getValue();
+        }
+        return null;
     }
 
     public ItemBuilder setSkull(@NotNull String skullOwner) {
