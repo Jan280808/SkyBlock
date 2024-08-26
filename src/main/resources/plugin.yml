@@ -5,6 +5,9 @@ api-version: '1.21'
 author: Jan2808
 description: SkyBlock plugin
 
+depend:
+  - Citizens
+
 commands:
   island:
     permission: xxx.xxx
