@@ -21,3 +21,5 @@ commands:
     description: open trade system for safe trading between two players
   display:
     description: open inventory from display
+  level:
+    description: open level inventory

@@ -1,6 +1,8 @@
 package de.jan.skyblock.player;
 
 import de.jan.skyblock.island.Island;
+import de.jan.skyblock.player.level.Level;
+import de.jan.skyblock.player.level.MiningLevel;
 import de.jan.skyblock.location.Locations;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +18,16 @@ public class SkyPlayer {
     private Island island;
     private Locations currentLocation;
 
+    private Level[] levels;
+    private MiningLevel miningLevel;
+
     public SkyPlayer(UUID uuid, Island island) {
         this.uuid = uuid;
         this.island = island;
-        currentLocation = new UnknownLocation();
+        this.currentLocation = new UnknownLocation();
+
+        this.levels = new Level[1];
+        levels[0] = this.miningLevel = new MiningLevel();
     }
 
     public boolean teleportToIsland() {
