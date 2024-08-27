@@ -9,11 +9,20 @@ public interface Level {
 
     ItemStack displayItem();
 
+    double baseXP();
+
+    double multiplier();
+
     int currentLevel();
 
-    double currentXP();
+    //return string to avoid conversion errors
+    String currentXP();
 
     void addXP(double amount);
 
+    double nextLevelXP();
+
     void levelUP();
+
+    boolean hasLevel(int requiredLevel);
 }
