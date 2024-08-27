@@ -27,7 +27,7 @@ public class SkyPlayer {
         this.currentLocation = new UnknownLocation();
 
         this.levels = new Level[1];
-        levels[0] = this.miningLevel = new MiningLevel();
+        levels[0] = this.miningLevel = new MiningLevel(this);
     }
 
     public boolean teleportToIsland() {
@@ -42,6 +42,11 @@ public class SkyPlayer {
 
     public boolean isOnline() {
         return getPlayer().isOnline();
+    }
+
+    public boolean isOnIsland() {
+        if(island == null) return false;
+        return currentLocation == island;
     }
 
     public static class UnknownLocation implements Locations {
