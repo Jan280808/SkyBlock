@@ -1,8 +1,9 @@
-package de.jan.skyblock.player.level;
+package de.jan.skyblock.player.level.type;
 
 import de.jan.skyblock.builder.ItemBuilder;
 import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.player.SkyPlayer;
+import de.jan.skyblock.player.level.Level;
 import de.jan.skyblock.sound.SoundManager;
 import de.jan.skyblock.sound.Sounds;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class MiningLevel implements Level {
 
     @Override
     public Component displayName() {
-        return ComponentSerializer.deserialize("<gold>Mining-Level ");
+        return ComponentSerializer.deserialize("<gold>MiningLevel ");
     }
 
     @Override
