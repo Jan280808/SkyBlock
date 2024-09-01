@@ -26,14 +26,12 @@ public class ItemBuilder {
     private final ItemStack itemStack;
     private final ItemMeta itemMeta;
 
+    private final List<String> loreList;
+
     public ItemBuilder(@NotNull Material material) {
         this.itemStack = new ItemStack(material);
         this.itemMeta = itemStack.getItemMeta();
-    }
-
-    public ItemBuilder(@NotNull ItemStack stack) {
-        this.itemStack = stack;
-        this.itemMeta = stack.getItemMeta();
+        this.loreList = new ArrayList<>();
     }
 
     public ItemBuilder setDisplayName(@NotNull String string) {
@@ -56,23 +54,25 @@ public class ItemBuilder {
         return this;
     }
 
-    @SuppressWarnings("deprecation")
-    public ItemBuilder setLore(@NotNull List<String> loreList) {
-        itemMeta.setLore(loreList);
+    public ItemBuilder setLore(@NotNull String... lore) {
+        if(lore.length == 0) return this;
+        loreList.addAll(Arrays.asList(lore));
+        return this;
+    }
+
+    public ItemBuilder setLoreString(@NotNull List<String> lore) {
+        if(lore.isEmpty()) return this;
+        loreList.addAll(lore);
         return this;
     }
 
     public ItemBuilder setLore(@NotNull Component... lore) {
-        List<Component> loreList = new ArrayList<>();
-        Collections.addAll(loreList, lore);
-        itemMeta.lore(loreList);
+        Arrays.stream(lore).forEach(component -> loreList.add(ComponentSerializer.serialize(component)));
         return this;
     }
 
-    public ItemBuilder setLore(@NotNull String... lore) {
-        List<Component> loreList = new ArrayList<>();
-        Arrays.stream(lore).forEach(string -> loreList.add(ComponentSerializer.deserialize(string)));
-        itemMeta.lore(loreList);
+    private ItemBuilder setLore(@NotNull List<Component> lore) {
+        lore.forEach(component -> loreList.add(ComponentSerializer.serialize(component)));
         return this;
     }
 
@@ -169,10 +169,14 @@ public class ItemBuilder {
         itemStack.setItemMeta(itemMeta);
         return this;
     }
-
      */
 
     public ItemStack build() {
+        if(loreList != null) {
+            List<Component> componentList = new ArrayList<>();
+            loreList.forEach(string -> componentList.add(ComponentSerializer.deserialize(string)));
+            itemMeta.lore(componentList);
+        }
         itemStack.setItemMeta(itemMeta);
         return this.itemStack;
     }
