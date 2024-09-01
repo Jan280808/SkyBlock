@@ -24,3 +24,19 @@ Perks
 Piñata
 - jeb_ 1000 life, all 5min damage
 
+reaction game
+
+patchNote as NPC
+
+featureSupport
+    - player ride Book and this will be safet and can be read from admin
+    - bug, new feature, translationIssues
+
+giveaways
+    - auto deploy from giveaways
+    - player can join queue
+    - random pick from bot about loot and player
+
+winners podium
+    - spawn
+
