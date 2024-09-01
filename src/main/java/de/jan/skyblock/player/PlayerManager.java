@@ -1,7 +1,7 @@
 package de.jan.skyblock.player;
 
 import de.jan.skyblock.island.IslandManager;
-import de.jan.skyblock.player.level.LevelManager;
+import de.jan.skyblock.player.stats.StatsManager;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -13,12 +13,12 @@ public class PlayerManager {
 
     private final IslandManager islandManager;
     private final Map<UUID, SkyPlayer> playerMap;
-    private final LevelManager levelManager;
+    private final StatsManager levelManager;
 
     public PlayerManager(IslandManager islandManager) {
         this.islandManager = islandManager;
         this.playerMap = new HashMap<>();
-        this.levelManager = new LevelManager();
+        this.levelManager = new StatsManager();
     }
 
     public SkyPlayer getSkyPlayer(UUID uuid) {

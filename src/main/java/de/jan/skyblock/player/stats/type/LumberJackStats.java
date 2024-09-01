@@ -1,24 +1,21 @@
-package de.jan.skyblock.player.level.type;
+package de.jan.skyblock.player.stats.type;
 
-import de.jan.skyblock.builder.ItemBuilder;
 import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.player.SkyPlayer;
-import de.jan.skyblock.player.level.Level;
-import de.jan.skyblock.sound.SoundManager;
-import de.jan.skyblock.sound.Sounds;
+import de.jan.skyblock.player.stats.Stats;
+import de.jan.skyblock.player.stats.StatsManager;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
-public class LumberJackLevel implements Level {
+public class LumberJackStats implements Stats {
 
     private final SkyPlayer skyPlayer;
 
     private double currentXP = 0.00;
     private int currentLevel = 0;
 
-    public LumberJackLevel(SkyPlayer skyPlayer) {
+    public LumberJackStats(SkyPlayer skyPlayer) {
         this.skyPlayer = skyPlayer;
     }
 
@@ -28,8 +25,13 @@ public class LumberJackLevel implements Level {
     }
 
     @Override
-    public ItemStack displayItem() {
-        return new ItemBuilder(Material.IRON_AXE).setDisplayName(displayName()).setLore("<gray>CurrentLevel: " + currentLevel, "<gray>neededXP: " + nextLevelXP() + " - currentXP: " + currentXP()).build();
+    public Material material() {
+        return Material.IRON_AXE;
+    }
+
+    @Override
+    public String[] lore() {
+        return new String[0];
     }
 
     @Override
@@ -48,14 +50,14 @@ public class LumberJackLevel implements Level {
     }
 
     @Override
-    public String currentXP() {
-        return String.format("%.2f", currentXP);
+    public double currentXP() {
+        return currentXP;
     }
 
     @Override
     public void addXP(double amount) {
         currentXP += amount;
-        skyPlayer.getPlayer().sendActionBar(displayName().append(ComponentSerializer.deserialize("<gray>" + currentXP() + "/" + nextLevelXP())));
+        StatsManager.actionbarXP(skyPlayer, this);
         while (currentXP >= nextLevelXP()) {
             currentXP -= nextLevelXP();
             levelUP();
@@ -70,8 +72,7 @@ public class LumberJackLevel implements Level {
     @Override
     public void levelUP() {
         currentLevel = currentLevel +1;
-        SoundManager.playSound(Sounds.SUCCESSES, skyPlayer.getPlayer());
-        skyPlayer.getPlayer().sendActionBar(displayName().append(ComponentSerializer.deserialize("<gold>LevelUP aktuelles MiningLevel: " + currentLevel())));
+        StatsManager.actionbarLevelUP(skyPlayer, this);
     }
 
     @Override

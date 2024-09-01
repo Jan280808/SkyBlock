@@ -1,13 +1,15 @@
-package de.jan.skyblock.player.level;
+package de.jan.skyblock.player.stats;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
-public interface Level {
+public interface Stats {
 
     Component displayName();
 
-    ItemStack displayItem();
+    Material material();
+
+    String[] lore();
 
     double baseXP();
 
@@ -15,8 +17,7 @@ public interface Level {
 
     int currentLevel();
 
-    //return string to avoid conversion errors
-    String currentXP();
+    double currentXP();
 
     void addXP(double amount);
 

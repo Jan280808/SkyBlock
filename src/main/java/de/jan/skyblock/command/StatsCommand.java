@@ -2,7 +2,7 @@ package de.jan.skyblock.command;
 
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.player.SkyPlayer;
-import de.jan.skyblock.player.level.LevelManager;
+import de.jan.skyblock.player.stats.StatsManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -13,12 +13,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LevelCommand implements TabExecutor {
+public class StatsCommand implements TabExecutor {
 
     private final PlayerManager playerManager;
-    private final LevelManager levelManager;
+    private final StatsManager levelManager;
 
-    public LevelCommand(PlayerManager playerManager) {
+    public StatsCommand(PlayerManager playerManager) {
         this.playerManager = playerManager;
         this.levelManager = playerManager.getLevelManager();
     }
@@ -34,6 +34,6 @@ public class LevelCommand implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("level");
+        return List.of("stats");
     }
 }

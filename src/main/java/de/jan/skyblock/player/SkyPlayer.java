@@ -1,11 +1,11 @@
 package de.jan.skyblock.player;
 
 import de.jan.skyblock.island.Island;
-import de.jan.skyblock.player.level.type.FishingLevel;
-import de.jan.skyblock.player.level.type.KillEntityLevel;
-import de.jan.skyblock.player.level.Level;
-import de.jan.skyblock.player.level.type.LumberJackLevel;
-import de.jan.skyblock.player.level.type.MiningLevel;
+import de.jan.skyblock.player.stats.type.FishingStats;
+import de.jan.skyblock.player.stats.type.KillHostileStats;
+import de.jan.skyblock.player.stats.Stats;
+import de.jan.skyblock.player.stats.type.LumberJackStats;
+import de.jan.skyblock.player.stats.type.MiningStats;
 import de.jan.skyblock.location.Locations;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,22 +21,22 @@ public class SkyPlayer {
     private Island island;
     private Locations currentLocation;
 
-    private Level[] levels;
-    private MiningLevel miningLevel;
-    private KillEntityLevel killEntity;
-    private FishingLevel fishingLevel;
-    private LumberJackLevel lumberJackLevel;
+    private Stats[] stats;
+    private MiningStats miningStats;
+    private KillHostileStats killEntityStats;
+    private FishingStats fishingStats;
+    private LumberJackStats lumberJackStats;
 
     public SkyPlayer(UUID uuid, Island island) {
         this.uuid = uuid;
         this.island = island;
         this.currentLocation = new UnknownLocation();
 
-        this.levels = new Level[4];
-        levels[0] = this.miningLevel = new MiningLevel(this);
-        levels[1] = this.killEntity = new KillEntityLevel(this);
-        levels[2] = this.fishingLevel = new FishingLevel(this);
-        levels[3] = this.lumberJackLevel = new LumberJackLevel(this);
+        this.stats = new Stats[4];
+        stats[0] = this.miningStats = new MiningStats(this);
+        stats[1] = this.killEntityStats = new KillHostileStats(this);
+        stats[2] = this.fishingStats = new FishingStats(this);
+        stats[3] = this.lumberJackStats = new LumberJackStats(this);
     }
 
     public boolean teleportToIsland() {
@@ -55,7 +55,7 @@ public class SkyPlayer {
 
     public boolean isOnIsland() {
         if(island == null) return false;
-        return currentLocation == island;
+        return currentLocation != island;
     }
 
     public static class UnknownLocation implements Locations {

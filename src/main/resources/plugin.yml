@@ -21,5 +21,11 @@ commands:
     description: open trade system for safe trading between two players
   display:
     description: open inventory from display
-  level:
+  stats:
     description: open level inventory
+  s:
+    description: open level inventory
+  equipment:
+    description: open equipment inventory
+  generator:
+    description: display loops
