@@ -11,7 +11,9 @@ public enum Sounds {
     OPEN(Sound.BLOCK_CHEST_OPEN, 1, 1),
     TRADE_LOADING(Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1),
     TRADE_ACCEPT(Sound.ENTITY_CHICKEN_EGG, 1, 1),
-    TRADE_RESET(Sound.ENTITY_CHICKEN_EGG, 1, 0);
+    TRADE_RESET(Sound.ENTITY_CHICKEN_EGG, 1, 0),
+    LEVEL_XP(Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 1),
+    LEVEL_UP(Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
     private final Sound sound;
     private final int volume;
