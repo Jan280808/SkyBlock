@@ -1,23 +1,20 @@
 package de.jan.skyblock.component;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public final class ComponentSerializer {
 
-    public static Component deserialize(String input) {
-        if (input == null) return Component.empty();
-        return MiniMessage.miniMessage().deserialize(input);
-    }
+    static MiniMessage miniMessage = MiniMessage.miniMessage();
 
-    public static String format(String input) {
-        if (input == null) return "";
-        return LegacyComponentSerializer.legacySection().serialize(deserialize(input));
+    public static Component deserialize(String input) {
+        if(input == null) return Component.empty();
+        return miniMessage.deserialize(input).decoration(TextDecoration.ITALIC, false);
     }
 
     public static String serialize(Component input) {
-        if (input == null) return null;
-        return MiniMessage.miniMessage().serialize(input);
+        if(input == null) return null;
+        return miniMessage.serialize(input);
     }
 }
