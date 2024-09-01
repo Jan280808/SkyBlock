@@ -2,6 +2,7 @@ package de.jan.skyblock.island;
 
 import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.component.ComponentSerializer;
+import de.jan.skyblock.island.generator.GeneratorManager;
 import de.jan.skyblock.island.schematic.Category;
 import de.jan.skyblock.island.schematic.SchematicManager;
 import de.jan.skyblock.island.world.DummyWorld;
@@ -22,9 +23,10 @@ public class IslandManager {
 
     private final File file;
     private JSONObject islandJson;
-    private final SchematicManager schematicManager;
-    private final WorldManager worldManager;
     private final List<Island> islandList;
+    private final WorldManager worldManager;
+    private final SchematicManager schematicManager;
+    private final GeneratorManager generatorManager;
 
     public IslandManager() {
         this.file = new File("./plugins/SkyBlock/islands.json");
@@ -33,6 +35,7 @@ public class IslandManager {
         loadIslands();
         this.worldManager = new WorldManager(this);
         this.schematicManager = new SchematicManager(worldManager);
+        this.generatorManager = new GeneratorManager(this);
     }
 
     public void createIsland(SkyPlayer skyPlayer, Category category) {
@@ -63,6 +66,11 @@ public class IslandManager {
         float time = start - System.currentTimeMillis();
         safeIsland(island);
         SkyBlock.Logger.info("time: {}", time);
+    }
+
+    public Island getIslandFromLocation(Location location) {
+        Optional<Island> optionalIsland = islandList.stream().filter(island -> island.getIslandSchematic().isIn(location)).findFirst();
+        return optionalIsland.orElse(null);
     }
 
     private void safeIsland(Island island) {

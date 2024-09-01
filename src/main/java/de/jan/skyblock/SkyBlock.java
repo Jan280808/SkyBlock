@@ -3,11 +3,12 @@ package de.jan.skyblock;
 import de.jan.skyblock.command.*;
 import de.jan.skyblock.command.islandCommands.IslandCommand;
 import de.jan.skyblock.component.ComponentSerializer;
+import de.jan.skyblock.equipment.EquipmentEvent;
 import de.jan.skyblock.event.EnterPortalEvent;
 import de.jan.skyblock.event.PlayerConnectionEvent;
 import de.jan.skyblock.event.PlayerDamageEvent;
-import de.jan.skyblock.player.level.LevelEvent;
-import de.jan.skyblock.player.level.LevelManager;
+import de.jan.skyblock.island.generator.GeneratorEvent;
+import de.jan.skyblock.player.stats.StatsEvent;
 import de.jan.skyblock.spawn.SpawnIslandEvent;
 import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
@@ -68,7 +69,9 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new SpawnIslandEvent(playerManager, spawnIsland), this);
         pluginManager.registerEvents(new PlayerDamageEvent(playerManager), this);
         pluginManager.registerEvents(new DisplayEvent(tradeManager), this);
-        pluginManager.registerEvents(new LevelEvent(playerManager), this);
+        pluginManager.registerEvents(new StatsEvent(playerManager), this);
+        pluginManager.registerEvents(new EquipmentEvent(playerManager), this);
+        pluginManager.registerEvents(new GeneratorEvent(islandManager, playerManager), this);
     }
 
     private void registerCommands() {
@@ -77,6 +80,9 @@ public final class SkyBlock extends JavaPlugin {
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand(playerManager, spawnIsland));
         Objects.requireNonNull(getCommand("trade")).setExecutor(new TradeCommand(tradeManager));
         Objects.requireNonNull(getCommand("display")).setExecutor(new DisplayCommand(tradeManager));
-        Objects.requireNonNull(getCommand("level")).setExecutor(new LevelCommand(playerManager));
+        Objects.requireNonNull(getCommand("stats")).setExecutor(new StatsCommand(playerManager));
+        Objects.requireNonNull(getCommand("s")).setExecutor(new StatsCommand(playerManager));
+        Objects.requireNonNull(getCommand("equipment")).setExecutor(new EquipmentCommand());
+        Objects.requireNonNull(getCommand("generator")).setExecutor(new GeneratorCommand(playerManager, islandManager.getGeneratorManager()));
     }
 }
