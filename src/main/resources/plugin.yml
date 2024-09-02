@@ -29,3 +29,5 @@ commands:
     description: open equipment inventory
   generator:
     description: display loops
+  pinata:
+    description: spawn pinata

@@ -15,6 +15,7 @@ import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.spawn.SpawnIsland;
 import de.jan.skyblock.event.PlayerInventoryEvent;
+import de.jan.skyblock.spawn.pinata.PinataEvent;
 import de.jan.skyblock.trade.TradeEvent;
 import de.jan.skyblock.trade.TradeManager;
 import de.jan.skyblock.trade.display.DisplayEvent;
@@ -62,6 +63,7 @@ public final class SkyBlock extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         CitizensAPI.getNPCRegistries().forEach(npc -> npc.despawnNPCs(DespawnReason.RELOAD));
+        spawnIsland.getPinata().removePinata();
     }
 
     private void registerListener(PluginManager pluginManager) {
@@ -75,6 +77,7 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new StatsEvent(playerManager), this);
         pluginManager.registerEvents(new EquipmentEvent(equipmentManager), this);
         pluginManager.registerEvents(new GeneratorEvent(islandManager, playerManager), this);
+        pluginManager.registerEvents(new PinataEvent(spawnIsland), this);
     }
 
     private void registerCommands() {
@@ -87,5 +90,6 @@ public final class SkyBlock extends JavaPlugin {
         Objects.requireNonNull(getCommand("s")).setExecutor(new StatsCommand(playerManager));
         Objects.requireNonNull(getCommand("equipment")).setExecutor(new EquipmentCommand(equipmentManager));
         Objects.requireNonNull(getCommand("generator")).setExecutor(new GeneratorCommand(playerManager, islandManager.getGeneratorManager()));
+        Objects.requireNonNull(getCommand("pinata")).setExecutor(new PinataCommand());
     }
 }

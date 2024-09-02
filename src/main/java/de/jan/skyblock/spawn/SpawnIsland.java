@@ -4,14 +4,13 @@ import de.jan.skyblock.location.Locations;
 import de.jan.skyblock.player.SkyPlayer;
 import de.jan.skyblock.sound.SoundManager;
 import de.jan.skyblock.sound.Sounds;
-import de.jan.skyblock.spawn.shop.Shop;
+import de.jan.skyblock.spawn.pinata.Pinata;
 import de.jan.skyblock.spawn.shop.ShopManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.ArrayList;
 
 @Getter
 public class SpawnIsland implements Locations {
@@ -19,13 +18,13 @@ public class SpawnIsland implements Locations {
     private final Location location;
     private final World world;
     private final ShopManager shopManager;
-    private final Shop shop;
+    private final Pinata pinata;
 
     public SpawnIsland() {
         this.location = readJson();
         this.world = location.getWorld();
         this.shopManager = new ShopManager();
-        this.shop = shopManager.createShop("Blöcke", new ArrayList<>());
+        this.pinata = new Pinata(new Location(Bukkit.getWorld("world"), 19, 101, 21, 90, 0));
         world.setStorm(false);
         world.setThundering(false);
     }
