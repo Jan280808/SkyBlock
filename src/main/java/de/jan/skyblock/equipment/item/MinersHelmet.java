@@ -13,7 +13,7 @@ public class MinersHelmet implements Equipment {
 
     @Override
     public String displayName() {
-        return "<gold>Berkwerk";
+        return "<gold>Bergwerk";
     }
 
     @Override
