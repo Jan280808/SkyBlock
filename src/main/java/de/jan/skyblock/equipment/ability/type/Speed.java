@@ -11,6 +11,12 @@ import java.util.List;
 
 public class Speed implements Ability {
 
+    private final int amplifier;
+
+    public Speed(int amplifier) {
+        this.amplifier = amplifier;
+    }
+
     @Override
     public Component displayName() {
         return ComponentSerializer.deserialize("Speed");
@@ -18,7 +24,7 @@ public class Speed implements Ability {
 
     @Override
     public List<String> lore() {
-        return List.of("<erhalte dauerhaft speed 1>");
+        return List.of("<gray>Erhalte dauerhaft Schnelligkeit x" + amplifier);
     }
 
     @Override

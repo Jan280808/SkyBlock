@@ -9,7 +9,11 @@ import java.util.List;
 
 public class Miner implements Ability {
 
-    private final int amount = 5;
+    private final double oreProbability;
+
+    public Miner(double increaseOreProbability) {
+        this.oreProbability = increaseOreProbability;
+    }
 
     @Override
     public Component displayName() {
@@ -18,17 +22,18 @@ public class Miner implements Ability {
 
     @Override
     public List<String> lore() {
-        return List.of("<gray>Erhöht die Wahrscheinlichkeit Erze zu generieren", "<gray> +" + amount + "% Erz-Wahrscheinlichkeit");
+        return List.of("<gray>Erhöht die Wahrscheinlichkeit Erze zu generieren", "<gray> +" + oreProbability + "% Erz-Wahrscheinlichkeit");
     }
-
 
     @Override
     public void activate(SkyPlayer skyPlayer) {
-        skyPlayer.getPlayer().sendMessage("active Miner");
+        skyPlayer.getMiningStats().increaseOreProbability(oreProbability);
+        skyPlayer.getPlayer().sendMessage("active Miner" + skyPlayer.getMiningStats().getOreProbability());
     }
 
     @Override
     public void deactivate(SkyPlayer skyPlayer) {
-        skyPlayer.getPlayer().sendMessage("deactive Miner");
+        skyPlayer.getMiningStats().decreaseOreProbability(oreProbability);
+        skyPlayer.getPlayer().sendMessage("deactive Miner" + skyPlayer.getMiningStats().getOreProbability());
     }
 }

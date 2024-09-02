@@ -13,7 +13,12 @@ public class OwlVision implements PotionAbility {
 
     @Override
     public Component displayName() {
-        return ComponentSerializer.deserialize("<aqua>OwlVision");
+        return ComponentSerializer.deserialize("<aqua>Eulensicht");
+    }
+
+    @Override
+    public List<String> lore() {
+        return List.of("<gray>Erhalte dauerhaft <aqua>Nachtsicht", "<gray>Sehr nützlich wenn man <aqua>'full bright' <gray>nutzt...");
     }
 
     @Override
@@ -26,11 +31,6 @@ public class OwlVision implements PotionAbility {
     public void deactivate(SkyPlayer skyPlayer) {
         skyPlayer.getPlayer().removePotionEffect(potionEffectType());
         skyPlayer.getPlayer().sendMessage("deactiv owl");
-    }
-
-    @Override
-    public List<String> lore() {
-        return List.of("<gray>Du erhälst dauerhaft <gold>" + potionEffectType().key().asMinimalString() + " <gray>x<gold>" + amplifier(), "<gray>Sehr nützlich wenn man <aqua>'full bright' <gray>nutzt...");
     }
 
     @Override

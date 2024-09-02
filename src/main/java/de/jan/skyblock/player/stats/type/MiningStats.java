@@ -18,7 +18,7 @@ public class MiningStats implements Stats {
     private double currentXP = 0.00;
     private int currentLevel = 0;
 
-    private final double defaultOreProbability = 10;
+    private final double defaultOreProbability = 10.0;
     private double oreProbability = defaultOreProbability;
 
     private final OreProbability[] oreList;
@@ -34,8 +34,8 @@ public class MiningStats implements Stats {
     public MiningStats(SkyPlayer skyPlayer) {
         this.skyPlayer = skyPlayer;
         this.oreList = new OreProbability[8];
-        oreList[0] = this.coalOre = new OreProbability(Material.COAL_ORE, 60);
-        oreList[1] = this.copperOre = new OreProbability(Material.COPPER_ORE, 50);
+        oreList[0] = this.coalOre = new OreProbability(Material.COAL_ORE, 70);
+        oreList[1] = this.copperOre = new OreProbability(Material.COPPER_ORE, 60);
         oreList[2] = this.ironOre = new OreProbability(Material.IRON_ORE, 40);
         oreList[3] = this.redstoneOre = new OreProbability(Material.REDSTONE_ORE, 20);
         oreList[4] = this.lapisOre = new OreProbability(Material.LAPIS_ORE, 20);
@@ -46,6 +46,10 @@ public class MiningStats implements Stats {
 
     public void increaseOreProbability(double amount) {
         this.oreProbability = oreProbability + amount;
+    }
+
+    public void decreaseOreProbability(double amount) {
+        this.oreProbability = oreProbability - amount;
     }
 
     public void resetOreProbability() {

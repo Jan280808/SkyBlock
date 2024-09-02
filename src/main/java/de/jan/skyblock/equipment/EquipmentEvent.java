@@ -1,43 +1,36 @@
 package de.jan.skyblock.equipment;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import de.jan.skyblock.player.PlayerManager;
-import de.jan.skyblock.player.SkyPlayer;
-import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-
 public class EquipmentEvent implements Listener {
 
-    private final PlayerManager playerManager;
+    private final EquipmentManager equipmentManager;
 
-    public EquipmentEvent(PlayerManager playerManager) {
-        this.playerManager = playerManager;
+    public EquipmentEvent(EquipmentManager equipmentManager) {
+        this.equipmentManager = equipmentManager;
     }
 
     @EventHandler
     public void onChangeArmor(PlayerArmorChangeEvent event) {
-        SkyPlayer skyPlayer = playerManager.getSkyPlayer(event.getPlayer().getUniqueId());
-        ItemStack oldStack = event.getOldItem();
-        ItemStack newStack = event.getNewItem();
-
-        Arrays.stream(Equipment.values()).filter(equipment -> oldStack.equals(equipment.getItemStack())).forEach(equipment -> equipment.getAbility().deactivate(skyPlayer));
-        if(newStack.getType().equals(Material.AIR)) return;
-        Arrays.stream(Equipment.values()).filter(equipment -> newStack.equals(equipment.getItemStack())).forEach(equipment -> equipment.getAbility().activate(skyPlayer));
+        equipmentManager.handleEquipmentAbility(event.getPlayer(), event.getOldItem(), event.getNewItem(), Equipment.Type.EQUIPMENT);
     }
 
     @EventHandler
     public void onChangeOffHand(PlayerSwapHandItemsEvent event) {
-        SkyPlayer skyPlayer = playerManager.getSkyPlayer(event.getPlayer().getUniqueId());
-        ItemStack oldStack = event.getMainHandItem();
-        ItemStack newStack = event.getOffHandItem();
+        equipmentManager.handleEquipmentAbility(event.getPlayer(), event.getMainHandItem(), event.getOffHandItem(), Equipment.Type.OFF_HAND);
+    }
 
-        Arrays.stream(Equipment.values()).filter(equipment -> oldStack.equals(equipment.getItemStack())).forEach(equipment -> equipment.getAbility().deactivate(skyPlayer));
-        if(newStack.getType().equals(Material.AIR)) return;
-        Arrays.stream(Equipment.values()).filter(equipment -> newStack.equals(equipment.getItemStack())).forEach(equipment -> equipment.getAbility().activate(skyPlayer));
+    @EventHandler
+    public void onChangeMainHand(PlayerItemHeldEvent event) {
+        Player player = event.getPlayer();
+        ItemStack oldStack = player.getInventory().getItem(event.getPreviousSlot());
+        ItemStack newStack = player.getInventory().getItem(event.getNewSlot());
+        equipmentManager.handleEquipmentAbility(player, oldStack, newStack, Equipment.Type.MAIN_HAND);
     }
 }

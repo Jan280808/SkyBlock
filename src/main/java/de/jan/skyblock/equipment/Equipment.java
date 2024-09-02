@@ -1,37 +1,36 @@
 package de.jan.skyblock.equipment;
 
-import de.jan.skyblock.builder.ItemBuilder;
 import de.jan.skyblock.equipment.ability.Ability;
-import de.jan.skyblock.equipment.ability.type.LuckyPenny;
-import de.jan.skyblock.equipment.ability.type.Miner;
-import de.jan.skyblock.equipment.ability.type.OwlVision;
-import de.jan.skyblock.equipment.ability.PotionAbility;
-import de.jan.skyblock.equipment.ability.type.Speed;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-@Getter
-public enum Equipment {
-    OWL(Material.DIAMOND_HELMET, new OwlVision()),
-    MINER(Material.GOLDEN_HELMET, new Miner()),
-    HERMES_BOOTS(Material.LEATHER_BOOTS, new Speed()),
-    LUCKY_PENNY(Material.GOLD_NUGGET, new LuckyPenny());
+import java.util.List;
 
-    private final Material material;
-    private final Ability ability;
+public interface Equipment {
 
-    Equipment(Material material, Ability ability) {
-        this.material = material;
-        this.ability = ability;
-    }
+    String displayName();
 
-    public ItemStack getItemStack() {
-        try {
-            PotionAbility potionAbility = (PotionAbility) ability;
-            return new ItemBuilder(material).setDisplayName(potionAbility.displayName()).setLoreString(potionAbility.lore()).build();
-        } catch (Exception ignore) {
-            return new ItemBuilder(material).setDisplayName(ability.displayName()).setLoreString(ability.lore()).build();
+    Material material();
+
+    List<String> lore();
+
+    Ability ability();
+
+    Type type();
+
+    ItemStack itemStack();
+
+    @Getter
+    enum Type {
+        EQUIPMENT("<gray>Zieh dieses Item an"),
+        OFF_HAND("<gray>Halte dieses Item in der OffHand"),
+        MAIN_HAND("<gray>Halte dieses Item in der MainHand");
+
+        private final String description;
+
+        Type(String description) {
+            this.description = description;
         }
     }
 }
