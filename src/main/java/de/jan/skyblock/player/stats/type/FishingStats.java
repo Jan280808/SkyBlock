@@ -35,7 +35,6 @@ public class FishingStats implements Stats {
         return new String[0];
     }
 
-
     @Override
     public double baseXP() {
         return 100.0;

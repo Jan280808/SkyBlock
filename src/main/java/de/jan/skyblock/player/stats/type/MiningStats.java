@@ -8,7 +8,7 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
-import java.util.Arrays;
+import java.util.stream.IntStream;
 
 @Getter
 public class MiningStats implements Stats {
@@ -68,9 +68,14 @@ public class MiningStats implements Stats {
 
     @Override
     public String[] lore() {
-        String[] strings = new String[9];
-        Arrays.setAll(strings, i -> i == 0 ? "" : "<gray>" + oreList[(i - 1) % oreList.length].material.name() + ": <gold>" + oreList[(i - 1) % oreList.length].probability + "%");
-        return strings;
+        return IntStream.range(0, 10).mapToObj(i -> {
+                    if(i == 0) return "OreProbability: " + oreProbability;
+                    else if(i == 1) return "";
+                    else {
+                        int oreIndex = (i - 2) % oreList.length;
+                        return "<gray>" + oreList[oreIndex].material.name() + ": <gold>" + oreList[oreIndex].probability + "%";
+                    }
+                }).toArray(String[]::new);
     }
 
     @Override

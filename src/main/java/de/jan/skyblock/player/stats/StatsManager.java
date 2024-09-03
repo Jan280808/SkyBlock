@@ -8,7 +8,6 @@ import de.jan.skyblock.sound.Sounds;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
@@ -16,15 +15,12 @@ public class StatsManager {
 
     public void createInventory(SkyPlayer skyPlayer) {
         Inventory inventory = Bukkit.createInventory(skyPlayer.getPlayer(), 27, ComponentSerializer.deserialize("Level"));
-        Arrays.stream(skyPlayer.getStats()).forEach(stats -> {
-            ItemStack itemStack = new ItemBuilder(stats.material()).setDisplayName(stats.displayName()).setLore(createProgressbar(stats)).setLore(stats.lore()).build();
-            inventory.addItem(itemStack);
-        });
+        Arrays.stream(skyPlayer.getStats()).forEach(stats -> inventory.addItem(new ItemBuilder(stats.material()).setDisplayName(stats.displayName()).setLore(createProgressbar(stats)).setLore(stats.lore()).setLore(" ", "CurrentLevel: " + stats.currentLevel()).build()));
         skyPlayer.getPlayer().openInventory(inventory);
     }
 
-    public static void actionbarXP(SkyPlayer skyPlayer, Stats level) {
-        skyPlayer.getPlayer().sendActionBar(createProgressbar(level));
+    public static void actionbarXP(SkyPlayer skyPlayer, Stats stats) {
+        skyPlayer.getPlayer().sendActionBar(stats.displayName().append(createProgressbar(stats)));
         SoundManager.playSound(Sounds.LEVEL_XP, skyPlayer);
     }
 
@@ -44,7 +40,7 @@ public class StatsManager {
             else progressBar = progressBar.append(ComponentSerializer.deserialize("<gray>|"));
         }
 
-        progressBar = level.displayName().append(progressBar.append(ComponentSerializer.deserialize(" <white>" + String.format("%.2f", progressPercentage) + "%")));
+        progressBar = progressBar.append(ComponentSerializer.deserialize(" <white>" + String.format("%.2f", progressPercentage) + "%"));
         return progressBar;
     }
 }
