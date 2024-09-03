@@ -23,6 +23,7 @@ Perks
 
 Piñata
 - jeb_ 1000 life, all 5min damage
+- zu lame
 
 reaction game
 
@@ -40,3 +41,14 @@ giveaways
 winners podium
     - spawn
 
+gambling
+
+reward
+    - daily reward
+
+trashMan
+
+breakOre -> set item player inventory
+inventory full???
+
+TeleportToSpawnIsland-Item
