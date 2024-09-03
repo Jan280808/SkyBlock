@@ -2,16 +2,17 @@ package de.jan.skyblock.player.stats;
 
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.player.SkyPlayer;
-import de.jan.skyblock.player.stats.type.FishingStats;
-import de.jan.skyblock.player.stats.type.KillHostileStats;
-import de.jan.skyblock.player.stats.type.LumberJackStats;
-import de.jan.skyblock.player.stats.type.MiningStats;
+import de.jan.skyblock.player.stats.type.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 
@@ -73,5 +74,17 @@ public class StatsEvent implements Listener {
         if(!naturallyGeneratedWood.contains(block)) return;
         skyPlayer.getLumberJackStats().addXP(1);
         naturallyGeneratedWood.remove(block);
+    }
+
+    @EventHandler
+    public void onPickUp(EntityPickupItemEvent event) {
+        if(!event.getEntityType().equals(EntityType.PLAYER)) return;
+        Player player = (Player) event.getEntity();
+        SkyPlayer skyPlayer = this.playerManager.getSkyPlayer(player.getUniqueId());
+        if(skyPlayer.isOnIsland()) return;
+
+        Item item = event.getItem();
+        FarmerStats farmerStats = skyPlayer.getFarmerStats();
+        Arrays.stream(FarmerStats.FarmProducts.values()).filter(farmProducts -> item.getItemStack().getType().equals(farmProducts.getMaterial())).forEach(farmProducts -> farmerStats.addXP(1.0));
     }
 }
