@@ -15,6 +15,7 @@ import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.spawn.SpawnIsland;
 import de.jan.skyblock.event.PlayerInventoryEvent;
+import de.jan.skyblock.spawn.island.WardenEvent;
 import de.jan.skyblock.spawn.pinata.PinataEvent;
 import de.jan.skyblock.trade.TradeEvent;
 import de.jan.skyblock.trade.TradeManager;
@@ -50,13 +51,13 @@ public final class SkyBlock extends JavaPlugin {
         instance = this;
         islandManager = new IslandManager();
         playerManager = new PlayerManager(islandManager);
-        spawnIsland = new SpawnIsland();
+        spawnIsland = new SpawnIsland(islandManager);
         tradeManager = new TradeManager();
         equipmentManager = new EquipmentManager(playerManager);
         registerListener(Bukkit.getPluginManager());
         registerCommands();
         float time = start-System.currentTimeMillis();
-        Logger.info("SkyBlock finish in: {}", time);
+        Logger.info("SkyBlock finish in: {}ms", time);
     }
 
     @Override
@@ -78,6 +79,7 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new EquipmentEvent(equipmentManager), this);
         pluginManager.registerEvents(new GeneratorEvent(islandManager, playerManager), this);
         pluginManager.registerEvents(new PinataEvent(spawnIsland), this);
+        pluginManager.registerEvents(new WardenEvent(playerManager, spawnIsland), this);
     }
 
     private void registerCommands() {
