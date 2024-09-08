@@ -44,6 +44,10 @@ public class SkyPlayer {
         return true;
     }
 
+    public boolean hasIsland() {
+        return island != null;
+    }
+
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
