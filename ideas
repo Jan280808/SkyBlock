@@ -1,3 +1,5 @@
+Island-Member
+
 Island-level
     - no death if player fall in void
     - more space
@@ -7,8 +9,12 @@ Island-XP
     - trade for stuff
 
 
+
+
 Quests
     - do stuff & get stuff
+
+Achievements
 
 TPA
 
@@ -52,3 +58,5 @@ breakOre -> set item player inventory
 inventory full???
 
 TeleportToSpawnIsland-Item
+
+giantEntity
