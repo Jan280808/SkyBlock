@@ -1,6 +1,5 @@
 package de.jan.skyblock.island.generator;
 
-import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.SkyPlayer;
 import de.jan.skyblock.player.stats.type.MiningStats;
 import lombok.Getter;
@@ -14,12 +13,10 @@ import java.util.Random;
 @Getter
 public class GeneratorManager {
 
-    private final IslandManager islandManager;
     private final Map<Block, SkyPlayer> blockMap;
     private final Random random;
 
-    public GeneratorManager(IslandManager islandManager) {
-        this.islandManager = islandManager;
+    public GeneratorManager() {
         this.blockMap = new HashMap<>();
         this.random = new Random();
     }

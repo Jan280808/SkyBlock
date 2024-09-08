@@ -1,6 +1,5 @@
 package de.jan.skyblock.island.world;
 
-import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.island.Island;
 import de.jan.skyblock.island.IslandManager;
 import org.bukkit.Bukkit;
@@ -16,7 +15,7 @@ public class WorldManager {
 
     private final IslandManager islandManager;
     private final List<DummyWorld> dummyList;
-    private final int maxIslandPerWorld = 1;
+    private final int maxIslandPerWorld = 5;
 
     public WorldManager(IslandManager islandManager) {
         this.islandManager = islandManager;
@@ -25,36 +24,18 @@ public class WorldManager {
     }
 
     private void load() {
-        for(Island island : islandManager.getIslandList()) {
-            World islandWorld = island.getWorld();
-
-        }
-
-        // Eine Map, um DummyWorld-Objekte nach World zu speichern
         Map<World, DummyWorld> worldToDummyWorldMap = new HashMap<>();
-
-        // Durchlaufe alle Inseln und erstelle DummyWorld-Objekte
-        for (Island island : islandManager.getIslandList()) {
+        for(Island island : islandManager.getIslandList()) {
             World world = island.getWorld();
-
-            // Wenn kein DummyWorld für diese Welt existiert, erstelle einen neuen
             DummyWorld dummyWorld = worldToDummyWorldMap.get(world);
-            if (dummyWorld == null) {
+
+            if(dummyWorld == null) {
                 dummyWorld = new DummyWorld(world, maxIslandPerWorld);
                 worldToDummyWorldMap.put(world, dummyWorld);
                 dummyList.add(dummyWorld);
             }
-
-            // Füge die Insel zur entsprechenden DummyWorld hinzu
             dummyWorld.addIsland(island);
         }
-
-        // Logging der Ergebnisse
-        /*
-        for (DummyWorld dummyWorld : dummyList) {
-            SkyBlock.Logger.info("world:" + dummyWorld.getWorld().getName() + ", islands: " + dummyWorld.getIslandList().size());
-        }
-         */
     }
 
     public DummyWorld getDummyWorldWithFreeSlot() {
