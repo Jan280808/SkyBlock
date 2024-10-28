@@ -12,6 +12,8 @@ import de.jan.skyblock.sound.Sounds;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.entity.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,6 +44,12 @@ public class IslandManager {
         this.schematicManager = new SchematicManager(worldManager);
         this.generatorManager = new GeneratorManager();
         loadIslandsFromJson();
+        showBoarder();
+    }
+
+    public Island getIslandFromLocation(Location location) {
+        Optional<Island> optionalIsland = islandList.stream().filter(island -> island.getIslandLevel().getCube().isIn(location)).findFirst();
+        return optionalIsland.orElse(null);
     }
 
     public void createNewIsland(SkyPlayer skyPlayer, SchematicManager.Category category) {
@@ -67,9 +75,14 @@ public class IslandManager {
         saveIsland(island);
     }
 
-    public Island getIslandFromLocation(Location location) {
-        Optional<Island> optionalIsland = islandList.stream().filter(island -> island.getIslandLevel().getCube().isIn(location)).findFirst();
-        return optionalIsland.orElse(null);
+    private void showBoarder() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(SkyBlock.instance, () -> islandList.forEach(island -> {
+            Player player = Bukkit.getPlayer(island.getOwner());
+            if(player == null) return;
+            if(player.isOnline()) return;
+            if(!island.isShowCubeActive()) return;
+            island.getIslandLevel().getCube().showCube(Particle.HAPPY_VILLAGER);
+        }), 0, 20);
     }
 
     private void loadIslandsFromJson() {

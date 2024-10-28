@@ -53,12 +53,19 @@ public class SkyPlayer {
     }
 
     public boolean isOnline() {
+        if(getPlayer() == null) return false;
         return getPlayer().isOnline();
     }
 
     public boolean isOnIsland() {
         if(island == null) return false;
-        return currentLocation != island;
+        return currentLocation == island;
+    }
+
+    public boolean isInIsland() {
+        if(island == null) return false;
+        if(getPlayer() == null) return false;
+        return island.getIslandLevel().getCube().isIn(getPlayer());
     }
 
     public static class UnknownLocation implements Locations {

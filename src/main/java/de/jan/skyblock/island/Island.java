@@ -3,6 +3,7 @@ package de.jan.skyblock.island;
 import de.jan.skyblock.location.Locations;
 import de.jan.skyblock.player.SkyPlayer;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -21,6 +22,9 @@ public class Island implements Locations {
     private final IslandLevel islandLevel;
     private final String createDate;
 
+    @Setter
+    private boolean showCubeActive;
+
     //create completely new island
     public Island(int id, UUID owner, Location center)  {
         this.id = id;
@@ -30,6 +34,7 @@ public class Island implements Locations {
         this.members = new ArrayList<>();
         this.islandLevel = new IslandLevel(this);
         this.createDate = new SimpleDateFormat("dd,MM,yy").format(new Date());
+        this.showCubeActive = false;
     }
 
     //load island from .json
@@ -41,6 +46,7 @@ public class Island implements Locations {
         this.members = members;
         this.islandLevel = new IslandLevel(this, islandLevel);
         this.createDate = createDate;
+        this.showCubeActive = false;
     }
 
     public void teleport(SkyPlayer skyPlayer) {

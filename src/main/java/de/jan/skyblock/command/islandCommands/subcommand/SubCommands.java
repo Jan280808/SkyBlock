@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum SubCommands {
     CREATE_ISLAND(new CreateIslandCommand(), "create", true),
+    SHOW_BOARDER(new BoarderCommand(), "show", true),
     INFO(new InfoCommand(), "info", true),
     DEBUG(new DebugCommand(), "debug", false);
 
