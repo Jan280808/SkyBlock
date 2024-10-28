@@ -12,6 +12,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -79,6 +81,20 @@ public class SpawnIslandEvent implements Listener {
     public void onFood(FoodLevelChangeEvent event) {
         Player player = (Player) event.getEntity();
         SkyPlayer skyPlayer = playerManager.getSkyPlayer(player.getUniqueId());
+        if(!skyPlayer.getCurrentLocation().equals(spawnIsland)) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBucketFill(PlayerBucketFillEvent event) {
+        SkyPlayer skyPlayer = playerManager.getSkyPlayer(event.getPlayer().getUniqueId());
+        if(!skyPlayer.getCurrentLocation().equals(spawnIsland)) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+        SkyPlayer skyPlayer = playerManager.getSkyPlayer(event.getPlayer().getUniqueId());
         if(!skyPlayer.getCurrentLocation().equals(spawnIsland)) return;
         event.setCancelled(true);
     }
