@@ -13,6 +13,9 @@ commands:
   island:
     permission: xxx.xxx
     description: manage all island related commands
+  is:
+    permission: xxx.xxx
+    description: manage all island related commands
   world:
     permission: xxx.xxx
     description: teleport player to world

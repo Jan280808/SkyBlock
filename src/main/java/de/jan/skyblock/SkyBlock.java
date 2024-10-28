@@ -5,16 +5,14 @@ import de.jan.skyblock.command.islandCommands.IslandCommand;
 import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.equipment.EquipmentEvent;
 import de.jan.skyblock.equipment.EquipmentManager;
-import de.jan.skyblock.event.EnterPortalEvent;
-import de.jan.skyblock.event.PlayerConnectionEvent;
-import de.jan.skyblock.event.PlayerDamageEvent;
+import de.jan.skyblock.event.*;
+import de.jan.skyblock.island.IslandEvent;
 import de.jan.skyblock.island.generator.GeneratorEvent;
 import de.jan.skyblock.player.stats.StatsEvent;
 import de.jan.skyblock.spawn.SpawnIslandEvent;
 import de.jan.skyblock.island.IslandManager;
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.spawn.SpawnIsland;
-import de.jan.skyblock.event.PlayerInventoryEvent;
 import de.jan.skyblock.spawn.island.WardenEvent;
 import de.jan.skyblock.spawn.pinata.PinataEvent;
 import de.jan.skyblock.trade.TradeEvent;
@@ -80,10 +78,13 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new GeneratorEvent(islandManager, playerManager), this);
         pluginManager.registerEvents(new PinataEvent(spawnIsland), this);
         pluginManager.registerEvents(new WardenEvent(playerManager, spawnIsland), this);
+        pluginManager.registerEvents(new IslandEvent(playerManager), this);
+        pluginManager.registerEvents(new PlayerMoveEvent(playerManager), this);
     }
 
     private void registerCommands() {
         Objects.requireNonNull(getCommand("island")).setExecutor(new IslandCommand(islandManager, playerManager));
+        Objects.requireNonNull(getCommand("is")).setExecutor(new IslandCommand(islandManager, playerManager));
         Objects.requireNonNull(getCommand("world")).setExecutor(new WorldCommand());
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand(playerManager, spawnIsland));
         Objects.requireNonNull(getCommand("trade")).setExecutor(new TradeCommand(tradeManager));
