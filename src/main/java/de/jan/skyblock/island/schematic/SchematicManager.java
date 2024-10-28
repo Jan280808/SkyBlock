@@ -79,7 +79,7 @@ public class SchematicManager {
     private void loadSchematicFromJson() {
         double start = System.currentTimeMillis();
         if(schematicJson == null || !schematicJson.has("schematics")) {
-            SkyBlock.Logger.warn("Schematics could not be loaded");
+            SkyBlock.Logger.error("Schematics could not be loaded");
             return;
         }
         JSONObject schematics = schematicJson.getJSONObject("schematics");
