@@ -6,6 +6,7 @@ import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.equipment.EquipmentEvent;
 import de.jan.skyblock.equipment.EquipmentManager;
 import de.jan.skyblock.event.*;
+import de.jan.skyblock.event.custom.PlayerMoveEvent;
 import de.jan.skyblock.island.IslandEvent;
 import de.jan.skyblock.island.generator.GeneratorEvent;
 import de.jan.skyblock.player.stats.StatsEvent;
@@ -54,7 +55,7 @@ public final class SkyBlock extends JavaPlugin {
         equipmentManager = new EquipmentManager(playerManager);
         registerListener(Bukkit.getPluginManager());
         registerCommands();
-        float time = start-System.currentTimeMillis();
+        float time = System.currentTimeMillis() - start;
         Logger.info("SkyBlock finish in: {}ms", time);
     }
 
@@ -79,7 +80,9 @@ public final class SkyBlock extends JavaPlugin {
         pluginManager.registerEvents(new PinataEvent(spawnIsland), this);
         pluginManager.registerEvents(new WardenEvent(playerManager, spawnIsland), this);
         pluginManager.registerEvents(new IslandEvent(playerManager), this);
-        pluginManager.registerEvents(new PlayerMoveEvent(playerManager), this);
+
+        //trigger move scheduler
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(SkyBlock.instance, () -> pluginManager.callEvent(new PlayerMoveEvent(playerManager)), 0, 5);
     }
 
     private void registerCommands() {

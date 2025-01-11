@@ -1,5 +1,7 @@
 package de.jan.skyblock.player;
 
+import de.jan.skyblock.event.custom.SkyPlayerEnterIslandEvent;
+import de.jan.skyblock.island.Difficulty;
 import de.jan.skyblock.island.Island;
 import de.jan.skyblock.player.stats.type.*;
 import de.jan.skyblock.player.stats.Stats;
@@ -17,6 +19,7 @@ public class SkyPlayer {
     private final UUID uuid;
     private Island island;
     private Locations currentLocation;
+    private Difficulty difficulty;
 
     private Stats[] stats;
     private MiningStats miningStats;
@@ -38,10 +41,10 @@ public class SkyPlayer {
         stats[4] = this.farmerStats = new FarmerStats(this);
     }
 
-    public boolean teleportToIsland() {
-        if(island == null) return false;
+    public void teleportToIsland() {
+        if(island == null) return;
         island.teleport(this);
-        return true;
+        new SkyPlayerEnterIslandEvent(this, island);
     }
 
     public boolean hasIsland() {
@@ -54,7 +57,7 @@ public class SkyPlayer {
 
     public boolean isOnline() {
         if(getPlayer() == null) return false;
-        return getPlayer().isOnline();
+        return getPlayer().isConnected();
     }
 
     public boolean isOnIsland() {

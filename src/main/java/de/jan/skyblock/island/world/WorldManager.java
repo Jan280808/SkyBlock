@@ -14,23 +14,22 @@ import java.util.*;
 public class WorldManager {
 
     private final IslandManager islandManager;
-    private final List<DummyWorld> dummyList;
+    private final List<IslandWorld> dummyList;
     private final int maxIslandPerWorld = 5;
 
     public WorldManager(IslandManager islandManager) {
         this.islandManager = islandManager;
         this.dummyList = new ArrayList<>();
-        load();
     }
 
-    private void load() {
-        Map<World, DummyWorld> worldToDummyWorldMap = new HashMap<>();
+    public void load() {
+        Map<World, IslandWorld> worldToDummyWorldMap = new HashMap<>();
         for(Island island : islandManager.getIslandList()) {
-            World world = island.getWorld();
-            DummyWorld dummyWorld = worldToDummyWorldMap.get(world);
+            World world = island.islandWorld();
+            IslandWorld dummyWorld = worldToDummyWorldMap.get(world);
 
             if(dummyWorld == null) {
-                dummyWorld = new DummyWorld(world, maxIslandPerWorld);
+                dummyWorld = new IslandWorld(world, maxIslandPerWorld);
                 worldToDummyWorldMap.put(world, dummyWorld);
                 dummyList.add(dummyWorld);
             }
@@ -38,10 +37,10 @@ public class WorldManager {
         }
     }
 
-    public DummyWorld getDummyWorldWithFreeSlot() {
-        Optional<DummyWorld> optionalWorld = dummyList.stream().filter(dummyWorld -> dummyWorld != null && dummyWorld.haveFreeSlot()).findFirst();
+    public IslandWorld getDummyWorldWithFreeSlot() {
+        Optional<IslandWorld> optionalWorld = dummyList.stream().filter(dummyWorld -> dummyWorld != null && dummyWorld.haveFreeSlot()).findFirst();
         if(optionalWorld.isPresent()) return optionalWorld.get();
-        DummyWorld dummyWorld = new DummyWorld(generateVoidMap("dummyWorld" + dummyList.size()), maxIslandPerWorld);
+        IslandWorld dummyWorld = new IslandWorld(generateVoidMap("islandWorld" + dummyList.size()), maxIslandPerWorld);
         this.dummyList.add(dummyWorld);
         return dummyWorld;
     }

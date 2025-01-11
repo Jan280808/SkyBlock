@@ -5,11 +5,33 @@ api-version: '1.21'
 author: Jan2808
 description: SkyBlock plugin
 
+depend:
+  - Citizens
+  - ProtocolLib
+
 commands:
   island:
     permission: xxx.xxx
     description: manage all island related commands
-    usage: /island <subCommand>
+  is:
+    permission: xxx.xxx
+    description: manage all island related commands
   world:
     permission: xxx.xxx
     description: teleport player to world
+  spawn:
+    description: teleport player to spawn
+  trade:
+    description: open trade system for safe trading between two players
+  display:
+    description: open inventory from display
+  stats:
+    description: open level inventory
+  s:
+    description: open level inventory
+  equipment:
+    description: open equipment inventory
+  generator:
+    description: display loops
+  pinata:
+    description: spawn pinata

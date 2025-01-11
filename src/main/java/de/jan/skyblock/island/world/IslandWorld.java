@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class DummyWorld {
+public class IslandWorld {
 
     private final World world;
     private final int maxIsland;
     private final List<Island> islandList;
 
-    public DummyWorld(World world, int maxIsland) {
+    public IslandWorld(World world, int maxIsland) {
         this.world = world;
         this.maxIsland = maxIsland;
         this.islandList = new ArrayList<>();

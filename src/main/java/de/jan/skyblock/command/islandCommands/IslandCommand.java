@@ -37,7 +37,10 @@ public class IslandCommand implements TabExecutor {
         SkyPlayer skyPlayer = this.playerManager.getSkyPlayer(player.getUniqueId());
 
         if(args.length == 0) {
-            if(skyPlayer.teleportToIsland()) return true;
+            if(skyPlayer.hasIsland()) {
+                skyPlayer.teleportToIsland();
+                return true;
+            }
             sendHelpInformation(player);
             return false;
         }

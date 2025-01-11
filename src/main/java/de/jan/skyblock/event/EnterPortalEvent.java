@@ -27,7 +27,6 @@ public class EnterPortalEvent implements Listener {
         Player player = event.getPlayer();
         SkyPlayer skyPlayer = playerManager.getSkyPlayer(player.getUniqueId());
         if(!event.getCause().equals(PlayerTeleportEvent.TeleportCause.END_PORTAL)) return;
-        if(skyPlayer.teleportToIsland()) return;
         player.setVelocity(new Vector(1, 2, 0));
         player.sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<red>Du hast noch keine Insel erstellt")));
         SoundManager.playSound(Sounds.ERROR, player);

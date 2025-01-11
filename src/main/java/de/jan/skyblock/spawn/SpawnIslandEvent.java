@@ -1,5 +1,8 @@
 package de.jan.skyblock.spawn;
 
+import de.jan.skyblock.SkyBlock;
+import de.jan.skyblock.component.ComponentSerializer;
+import de.jan.skyblock.event.custom.PlayerMoveEvent;
 import de.jan.skyblock.player.PlayerManager;
 import de.jan.skyblock.player.SkyPlayer;
 import org.bukkit.World;
@@ -64,7 +67,7 @@ public class SpawnIslandEvent implements Listener {
     @EventHandler
     public void onWeather(WeatherChangeEvent event) {
         World world =  event.getWorld();
-        if(!world.equals(spawnIsland.getLocation().getWorld())) return;
+        if(!world.equals(spawnIsland.getWorld())) return;
         event.setCancelled(true);
     }
 
@@ -97,5 +100,16 @@ public class SpawnIslandEvent implements Listener {
         SkyPlayer skyPlayer = playerManager.getSkyPlayer(event.getPlayer().getUniqueId());
         if(!skyPlayer.getCurrentLocation().equals(spawnIsland)) return;
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        event.getPlayerManager().getPlayerMap().forEach((uuid, skyPlayer) -> {
+            if(skyPlayer.getPlayer() == null) return;
+            if(!skyPlayer.getCurrentLocation().equals(spawnIsland)) return;
+            if(skyPlayer.getPlayer().getY() >= 50) return;
+            spawnIsland.teleport(skyPlayer);
+            skyPlayer.getPlayer().sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<red>Watch out dont fall off the island")));
+        });
     }
 }

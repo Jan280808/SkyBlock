@@ -4,15 +4,13 @@ import de.jan.skyblock.SkyBlock;
 import de.jan.skyblock.component.ComponentSerializer;
 import de.jan.skyblock.island.generator.GeneratorManager;
 import de.jan.skyblock.island.schematic.SchematicManager;
-import de.jan.skyblock.island.world.DummyWorld;
+import de.jan.skyblock.island.world.IslandWorld;
 import de.jan.skyblock.island.world.WorldManager;
 import de.jan.skyblock.player.SkyPlayer;
 import de.jan.skyblock.sound.SoundManager;
 import de.jan.skyblock.sound.Sounds;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,13 +51,15 @@ public class IslandManager {
     }
 
     public void createNewIsland(SkyPlayer skyPlayer, SchematicManager.Category category) {
+        Player player = skyPlayer.getPlayer();
+        player.closeInventory();
         if(skyPlayer.hasIsland()) {
-            skyPlayer.getPlayer().sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<red>Du hast bereits eine Island")));
+            player.sendMessage(SkyBlock.Prefix.append(ComponentSerializer.deserialize("<red>Du hast bereits eine Island")));
             SoundManager.playSound(Sounds.ERROR, skyPlayer);
             return;
         }
 
-        DummyWorld dummyWorld = worldManager.getDummyWorldWithFreeSlot();
+        IslandWorld dummyWorld = worldManager.getDummyWorldWithFreeSlot();
         int id = dummyWorld.currentIsland()+1;
         int x = 50*id;
         int z = 50*id;
@@ -79,7 +79,7 @@ public class IslandManager {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(SkyBlock.instance, () -> islandList.forEach(island -> {
             Player player = Bukkit.getPlayer(island.getOwner());
             if(player == null) return;
-            if(player.isOnline()) return;
+            if(!player.isOnline()) return;
             if(!island.isShowCubeActive()) return;
             island.getIslandLevel().getCube().showCube(Particle.HAPPY_VILLAGER);
         }), 0, 20);
@@ -105,7 +105,8 @@ public class IslandManager {
             int z = centerJson.getInt("z");
             float yaw = centerJson.getFloat("yaw");
             float pitch = centerJson.getFloat("pitch");
-            Location center = new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
+            World world = Bukkit.createWorld(new WorldCreator(worldName));
+            Location center = new Location(world, x, y, z, yaw, pitch);
 
             JSONArray membersArray = islandJson.getJSONArray("members");
             List<UUID> members = new ArrayList<>();

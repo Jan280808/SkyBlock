@@ -42,7 +42,7 @@ public class SchematicManager {
             int deltaY = block.getY() - schematicCenter.getBlockY();
             int deltaZ = block.getZ() - schematicCenter.getBlockZ();
             Location newBlockLocation = island.getCenter().clone().add(deltaX, deltaY, deltaZ);
-            Block newBlock = island.getWorld().getBlockAt(newBlockLocation);
+            Block newBlock = island.islandWorld().getBlockAt(newBlockLocation);
             newBlock.setType(block.getType());
             newBlock.setBlockData(block.getBlockData());
 
@@ -96,7 +96,7 @@ public class SchematicManager {
             }
             this.schematicList.add(new Schematic(locations[0], locations[1], spawn, category));
         }
-        double time = start - System.currentTimeMillis();
+        double time = System.currentTimeMillis() - start;
         SkyBlock.Logger.info("load {} schematics in {}ms", schematicList.size(), time);
     }
 

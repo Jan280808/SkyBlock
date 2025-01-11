@@ -5,6 +5,7 @@ import org.bukkit.Sound;
 
 @Getter
 public enum Sounds {
+    FATAL_ERROR(Sound.BLOCK_ANVIL_LAND, 1, 1),
     ERROR(Sound.ENTITY_CHICKEN_EGG, 1, 1),
     SUCCESSES(Sound.ENTITY_PLAYER_LEVELUP, 1, 1),
     TELEPORT(Sound.ENTITY_SHULKER_TELEPORT, 1, 2),
